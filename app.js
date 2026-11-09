@@ -1,0 +1,1 @@
+const links=[...document.querySelectorAll('.nav a')];const observer=new IntersectionObserver(entries=>{for(const e of entries){if(e.isIntersecting){links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+e.target.id));}}},{rootMargin:'-25% 0px -55% 0px'});document.querySelectorAll('.chapter').forEach(el=>observer.observe(el));

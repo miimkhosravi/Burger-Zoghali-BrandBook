@@ -1,0 +1,1102 @@
+[
+  {
+    "number": 1,
+    "file": "assets/mockups/001-cobrand-11.webp",
+    "source_atlas": "assets/atlases/cobrand.webp",
+    "grid_cell": [
+      1,
+      1
+    ],
+    "label": "ساک سفارش با تپسی",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 2,
+    "file": "assets/mockups/002-cobrand-12.webp",
+    "source_atlas": "assets/atlases/cobrand.webp",
+    "grid_cell": [
+      1,
+      2
+    ],
+    "label": "مهر بسته‌بندی با اسنپ",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 3,
+    "file": "assets/mockups/003-cobrand-21.webp",
+    "source_atlas": "assets/atlases/cobrand.webp",
+    "grid_cell": [
+      2,
+      1
+    ],
+    "label": "تابلوی تحویل با تپسی",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 4,
+    "file": "assets/mockups/004-cobrand-22.webp",
+    "source_atlas": "assets/atlases/cobrand.webp",
+    "grid_cell": [
+      2,
+      2
+    ],
+    "label": "کاور رسید با اسنپ",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 5,
+    "file": "assets/mockups/005-u_front-11.webp",
+    "source_atlas": "assets/atlases/u_front.webp",
+    "grid_cell": [
+      1,
+      1
+    ],
+    "label": "سرآشپز گریل / مرد",
+    "aspect_ratio": 1.0112
+  },
+  {
+    "number": 6,
+    "file": "assets/mockups/006-u_front-12.webp",
+    "source_atlas": "assets/atlases/u_front.webp",
+    "grid_cell": [
+      1,
+      2
+    ],
+    "label": "سرآشپز گریل / زن",
+    "aspect_ratio": 1.0112
+  },
+  {
+    "number": 7,
+    "file": "assets/mockups/007-u_front-21.webp",
+    "source_atlas": "assets/atlases/u_front.webp",
+    "grid_cell": [
+      2,
+      1
+    ],
+    "label": "کانتر / مرد",
+    "aspect_ratio": 1.0112
+  },
+  {
+    "number": 8,
+    "file": "assets/mockups/008-u_front-22.webp",
+    "source_atlas": "assets/atlases/u_front.webp",
+    "grid_cell": [
+      2,
+      2
+    ],
+    "label": "کانتر / زن",
+    "aspect_ratio": 1.0112
+  },
+  {
+    "number": 9,
+    "file": "assets/mockups/009-u_back-11.webp",
+    "source_atlas": "assets/atlases/u_back.webp",
+    "grid_cell": [
+      1,
+      1
+    ],
+    "label": "آماده‌سازی / مرد",
+    "aspect_ratio": 1.0136
+  },
+  {
+    "number": 10,
+    "file": "assets/mockups/010-u_back-12.webp",
+    "source_atlas": "assets/atlases/u_back.webp",
+    "grid_cell": [
+      1,
+      2
+    ],
+    "label": "آماده‌سازی / زن",
+    "aspect_ratio": 1.0136
+  },
+  {
+    "number": 11,
+    "file": "assets/mockups/011-u_back-21.webp",
+    "source_atlas": "assets/atlases/u_back.webp",
+    "grid_cell": [
+      2,
+      1
+    ],
+    "label": "مدیر سالن",
+    "aspect_ratio": 1.0136
+  },
+  {
+    "number": 12,
+    "file": "assets/mockups/012-u_back-22.webp",
+    "source_atlas": "assets/atlases/u_back.webp",
+    "grid_cell": [
+      2,
+      2
+    ],
+    "label": "پیک موتوری",
+    "aspect_ratio": 1.0136
+  },
+  {
+    "number": 13,
+    "file": "assets/mockups/013-u_more-11.webp",
+    "source_atlas": "assets/atlases/u_more.webp",
+    "grid_cell": [
+      1,
+      1
+    ],
+    "label": "آشپز پیتزا",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 14,
+    "file": "assets/mockups/014-u_more-12.webp",
+    "source_atlas": "assets/atlases/u_more.webp",
+    "grid_cell": [
+      1,
+      2
+    ],
+    "label": "آشپز سرخ‌کن",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 15,
+    "file": "assets/mockups/015-u_more-13.webp",
+    "source_atlas": "assets/atlases/u_more.webp",
+    "grid_cell": [
+      1,
+      3
+    ],
+    "label": "میزبان سالن",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 16,
+    "file": "assets/mockups/016-u_more-21.webp",
+    "source_atlas": "assets/atlases/u_more.webp",
+    "grid_cell": [
+      2,
+      1
+    ],
+    "label": "خدمات و نظافت",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 17,
+    "file": "assets/mockups/017-u_more-22.webp",
+    "source_atlas": "assets/atlases/u_more.webp",
+    "grid_cell": [
+      2,
+      2
+    ],
+    "label": "باریستا و نوشیدنی",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 18,
+    "file": "assets/mockups/018-u_more-23.webp",
+    "source_atlas": "assets/atlases/u_more.webp",
+    "grid_cell": [
+      2,
+      3
+    ],
+    "label": "مسئول بسته‌بندی",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 19,
+    "file": "assets/mockups/019-u_more-31.webp",
+    "source_atlas": "assets/atlases/u_more.webp",
+    "grid_cell": [
+      3,
+      1
+    ],
+    "label": "سرپرست شیفت",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 20,
+    "file": "assets/mockups/020-u_more-32.webp",
+    "source_atlas": "assets/atlases/u_more.webp",
+    "grid_cell": [
+      3,
+      2
+    ],
+    "label": "میزبان / زن",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 21,
+    "file": "assets/mockups/021-u_more-33.webp",
+    "source_atlas": "assets/atlases/u_more.webp",
+    "grid_cell": [
+      3,
+      3
+    ],
+    "label": "هماهنگ‌کنندهٔ پیک",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 22,
+    "file": "assets/mockups/022-pack_burger-11.webp",
+    "source_atlas": "assets/atlases/pack_burger.webp",
+    "grid_cell": [
+      1,
+      1
+    ],
+    "label": "جعبهٔ برگر تک‌نفره",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 23,
+    "file": "assets/mockups/023-pack_burger-12.webp",
+    "source_atlas": "assets/atlases/pack_burger.webp",
+    "grid_cell": [
+      1,
+      2
+    ],
+    "label": "جعبهٔ برگر دوبل",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 24,
+    "file": "assets/mockups/024-pack_burger-21.webp",
+    "source_atlas": "assets/atlases/pack_burger.webp",
+    "grid_cell": [
+      2,
+      1
+    ],
+    "label": "جعبهٔ اشتراکی",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 25,
+    "file": "assets/mockups/025-pack_burger-22.webp",
+    "source_atlas": "assets/atlases/pack_burger.webp",
+    "grid_cell": [
+      2,
+      2
+    ],
+    "label": "جعبهٔ باز با محصول",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 26,
+    "file": "assets/mockups/026-pack_pizza-11.webp",
+    "source_atlas": "assets/atlases/pack_pizza.webp",
+    "grid_cell": [
+      1,
+      1
+    ],
+    "label": "پیتزا / سایز کوچک",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 27,
+    "file": "assets/mockups/027-pack_pizza-12.webp",
+    "source_atlas": "assets/atlases/pack_pizza.webp",
+    "grid_cell": [
+      1,
+      2
+    ],
+    "label": "پیتزا / سایز متوسط",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 28,
+    "file": "assets/mockups/028-pack_pizza-13.webp",
+    "source_atlas": "assets/atlases/pack_pizza.webp",
+    "grid_cell": [
+      1,
+      3
+    ],
+    "label": "پیتزا / سایز بزرگ",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 29,
+    "file": "assets/mockups/029-pack_pizza-21.webp",
+    "source_atlas": "assets/atlases/pack_pizza.webp",
+    "grid_cell": [
+      2,
+      1
+    ],
+    "label": "پیتزا / جعبهٔ باز",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 30,
+    "file": "assets/mockups/030-pack_pizza-22.webp",
+    "source_atlas": "assets/atlases/pack_pizza.webp",
+    "grid_cell": [
+      2,
+      2
+    ],
+    "label": "پیتزا / برش تکی",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 31,
+    "file": "assets/mockups/031-pack_chicken-11.webp",
+    "source_atlas": "assets/atlases/pack_chicken.webp",
+    "grid_cell": [
+      1,
+      1
+    ],
+    "label": "سطل کنتاکی / تک‌نفره",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 32,
+    "file": "assets/mockups/032-pack_chicken-12.webp",
+    "source_atlas": "assets/atlases/pack_chicken.webp",
+    "grid_cell": [
+      1,
+      2
+    ],
+    "label": "سطل کنتاکی / بزرگ",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 33,
+    "file": "assets/mockups/033-pack_chicken-13.webp",
+    "source_atlas": "assets/atlases/pack_chicken.webp",
+    "grid_cell": [
+      1,
+      3
+    ],
+    "label": "سطل کنتاکی / خانوادگی",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 34,
+    "file": "assets/mockups/034-pack_chicken-21.webp",
+    "source_atlas": "assets/atlases/pack_chicken.webp",
+    "grid_cell": [
+      2,
+      1
+    ],
+    "label": "سطل باز با محصول",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 35,
+    "file": "assets/mockups/035-pack_chicken-22.webp",
+    "source_atlas": "assets/atlases/pack_chicken.webp",
+    "grid_cell": [
+      2,
+      2
+    ],
+    "label": "جعبهٔ بال سوخاری",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 36,
+    "file": "assets/mockups/036-pack_chicken-23.webp",
+    "source_atlas": "assets/atlases/pack_chicken.webp",
+    "grid_cell": [
+      2,
+      3
+    ],
+    "label": "جعبهٔ فیلهٔ سوخاری",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 37,
+    "file": "assets/mockups/037-pack_fries-11.webp",
+    "source_atlas": "assets/atlases/pack_fries.webp",
+    "grid_cell": [
+      1,
+      1
+    ],
+    "label": "سیب‌زمینی / کوچک",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 38,
+    "file": "assets/mockups/038-pack_fries-12.webp",
+    "source_atlas": "assets/atlases/pack_fries.webp",
+    "grid_cell": [
+      1,
+      2
+    ],
+    "label": "سیب‌زمینی / متوسط",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 39,
+    "file": "assets/mockups/039-pack_fries-21.webp",
+    "source_atlas": "assets/atlases/pack_fries.webp",
+    "grid_cell": [
+      2,
+      1
+    ],
+    "label": "سیب‌زمینی / بزرگ",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 40,
+    "file": "assets/mockups/040-pack_fries-22.webp",
+    "source_atlas": "assets/atlases/pack_fries.webp",
+    "grid_cell": [
+      2,
+      2
+    ],
+    "label": "سیب‌زمینی ویژه",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 41,
+    "file": "assets/mockups/041-drinks-11.webp",
+    "source_atlas": "assets/atlases/drinks.webp",
+    "grid_cell": [
+      1,
+      1
+    ],
+    "label": "لیوان سرد / کوچک",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 42,
+    "file": "assets/mockups/042-drinks-12.webp",
+    "source_atlas": "assets/atlases/drinks.webp",
+    "grid_cell": [
+      1,
+      2
+    ],
+    "label": "لیوان سرد / متوسط",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 43,
+    "file": "assets/mockups/043-drinks-13.webp",
+    "source_atlas": "assets/atlases/drinks.webp",
+    "grid_cell": [
+      1,
+      3
+    ],
+    "label": "لیوان سرد / بزرگ",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 44,
+    "file": "assets/mockups/044-drinks-21.webp",
+    "source_atlas": "assets/atlases/drinks.webp",
+    "grid_cell": [
+      2,
+      1
+    ],
+    "label": "لیوان گرم / کوچک",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 45,
+    "file": "assets/mockups/045-drinks-22.webp",
+    "source_atlas": "assets/atlases/drinks.webp",
+    "grid_cell": [
+      2,
+      2
+    ],
+    "label": "لیوان قهوه / متوسط",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 46,
+    "file": "assets/mockups/046-drinks-23.webp",
+    "source_atlas": "assets/atlases/drinks.webp",
+    "grid_cell": [
+      2,
+      3
+    ],
+    "label": "لیوان گرم / بزرگ",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 47,
+    "file": "assets/mockups/047-drinks-31.webp",
+    "source_atlas": "assets/atlases/drinks.webp",
+    "grid_cell": [
+      3,
+      1
+    ],
+    "label": "لیوان در دست مشتری",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 48,
+    "file": "assets/mockups/048-drinks-32.webp",
+    "source_atlas": "assets/atlases/drinks.webp",
+    "grid_cell": [
+      3,
+      2
+    ],
+    "label": "لیوان کنار برگر",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 49,
+    "file": "assets/mockups/049-sides-11.webp",
+    "source_atlas": "assets/atlases/sides.webp",
+    "grid_cell": [
+      1,
+      1
+    ],
+    "label": "ظرف سس با درِ مشکی",
+    "aspect_ratio": 0.9889
+  },
+  {
+    "number": 50,
+    "file": "assets/mockups/050-sides-12.webp",
+    "source_atlas": "assets/atlases/sides.webp",
+    "grid_cell": [
+      1,
+      2
+    ],
+    "label": "حامل دو سس",
+    "aspect_ratio": 0.9889
+  },
+  {
+    "number": 51,
+    "file": "assets/mockups/051-sides-13.webp",
+    "source_atlas": "assets/atlases/sides.webp",
+    "grid_cell": [
+      1,
+      3
+    ],
+    "label": "سالاد / ظرف مشکی",
+    "aspect_ratio": 0.9889
+  },
+  {
+    "number": 52,
+    "file": "assets/mockups/052-sides-21.webp",
+    "source_atlas": "assets/atlases/sides.webp",
+    "grid_cell": [
+      2,
+      1
+    ],
+    "label": "سالاد / ظرف باز",
+    "aspect_ratio": 0.9889
+  },
+  {
+    "number": 53,
+    "file": "assets/mockups/053-sides-22.webp",
+    "source_atlas": "assets/atlases/sides.webp",
+    "grid_cell": [
+      2,
+      2
+    ],
+    "label": "پاکت حلقهٔ پیاز",
+    "aspect_ratio": 0.9889
+  },
+  {
+    "number": 54,
+    "file": "assets/mockups/054-sides-23.webp",
+    "source_atlas": "assets/atlases/sides.webp",
+    "grid_cell": [
+      2,
+      3
+    ],
+    "label": "جعبهٔ موزارلا استیک",
+    "aspect_ratio": 0.9889
+  },
+  {
+    "number": 55,
+    "file": "assets/mockups/055-sides-31.webp",
+    "source_atlas": "assets/atlases/sides.webp",
+    "grid_cell": [
+      3,
+      1
+    ],
+    "label": "ظرف دسر",
+    "aspect_ratio": 0.9889
+  },
+  {
+    "number": 56,
+    "file": "assets/mockups/056-sides-32.webp",
+    "source_atlas": "assets/atlases/sides.webp",
+    "grid_cell": [
+      3,
+      2
+    ],
+    "label": "جعبهٔ براونی",
+    "aspect_ratio": 0.9889
+  },
+  {
+    "number": 57,
+    "file": "assets/mockups/057-stationery-11.webp",
+    "source_atlas": "assets/atlases/stationery.webp",
+    "grid_cell": [
+      1,
+      1
+    ],
+    "label": "کارت ویزیت",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 58,
+    "file": "assets/mockups/058-stationery-12.webp",
+    "source_atlas": "assets/atlases/stationery.webp",
+    "grid_cell": [
+      1,
+      2
+    ],
+    "label": "سربرگ اداری",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 59,
+    "file": "assets/mockups/059-stationery-13.webp",
+    "source_atlas": "assets/atlases/stationery.webp",
+    "grid_cell": [
+      1,
+      3
+    ],
+    "label": "پاکت نامه",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 60,
+    "file": "assets/mockups/060-stationery-21.webp",
+    "source_atlas": "assets/atlases/stationery.webp",
+    "grid_cell": [
+      2,
+      1
+    ],
+    "label": "فاکتور و فرم",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 61,
+    "file": "assets/mockups/061-stationery-22.webp",
+    "source_atlas": "assets/atlases/stationery.webp",
+    "grid_cell": [
+      2,
+      2
+    ],
+    "label": "پوشهٔ اداری",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 62,
+    "file": "assets/mockups/062-stationery-23.webp",
+    "source_atlas": "assets/atlases/stationery.webp",
+    "grid_cell": [
+      2,
+      3
+    ],
+    "label": "رسید صندوق",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 63,
+    "file": "assets/mockups/063-stationery-31.webp",
+    "source_atlas": "assets/atlases/stationery.webp",
+    "grid_cell": [
+      3,
+      1
+    ],
+    "label": "کارت هدیه",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 64,
+    "file": "assets/mockups/064-stationery-32.webp",
+    "source_atlas": "assets/atlases/stationery.webp",
+    "grid_cell": [
+      3,
+      2
+    ],
+    "label": "کارت شناسایی پرسنل",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 65,
+    "file": "assets/mockups/065-stationery-33.webp",
+    "source_atlas": "assets/atlases/stationery.webp",
+    "grid_cell": [
+      3,
+      3
+    ],
+    "label": "منو و کارت تخفیف",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 66,
+    "file": "assets/mockups/066-consumables-11.webp",
+    "source_atlas": "assets/atlases/consumables.webp",
+    "grid_cell": [
+      1,
+      1
+    ],
+    "label": "برگهٔ زیر سینی / کامل",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 67,
+    "file": "assets/mockups/067-consumables-12.webp",
+    "source_atlas": "assets/atlases/consumables.webp",
+    "grid_cell": [
+      1,
+      2
+    ],
+    "label": "برگهٔ زیر سینی / همراه غذا",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 68,
+    "file": "assets/mockups/068-consumables-13.webp",
+    "source_atlas": "assets/atlases/consumables.webp",
+    "grid_cell": [
+      1,
+      3
+    ],
+    "label": "لفاف برگر",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 69,
+    "file": "assets/mockups/069-consumables-21.webp",
+    "source_atlas": "assets/atlases/consumables.webp",
+    "grid_cell": [
+      2,
+      1
+    ],
+    "label": "دستمال کاغذی",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 70,
+    "file": "assets/mockups/070-consumables-22.webp",
+    "source_atlas": "assets/atlases/consumables.webp",
+    "grid_cell": [
+      2,
+      2
+    ],
+    "label": "جا‌دستمالی کانتر",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 71,
+    "file": "assets/mockups/071-consumables-23.webp",
+    "source_atlas": "assets/atlases/consumables.webp",
+    "grid_cell": [
+      2,
+      3
+    ],
+    "label": "ساک بیرون‌بر",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 72,
+    "file": "assets/mockups/072-consumables-31.webp",
+    "source_atlas": "assets/atlases/consumables.webp",
+    "grid_cell": [
+      3,
+      1
+    ],
+    "label": "نگهدارندهٔ سس",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 73,
+    "file": "assets/mockups/073-consumables-32.webp",
+    "source_atlas": "assets/atlases/consumables.webp",
+    "grid_cell": [
+      3,
+      2
+    ],
+    "label": "حامل چند لیوان",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 74,
+    "file": "assets/mockups/074-consumables-33.webp",
+    "source_atlas": "assets/atlases/consumables.webp",
+    "grid_cell": [
+      3,
+      3
+    ],
+    "label": "دستمال مرطوب",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 75,
+    "file": "assets/mockups/075-delivery-11.webp",
+    "source_atlas": "assets/atlases/delivery.webp",
+    "grid_cell": [
+      1,
+      1
+    ],
+    "label": "موتور پیک در برابر شعبه",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 76,
+    "file": "assets/mockups/076-delivery-12.webp",
+    "source_atlas": "assets/atlases/delivery.webp",
+    "grid_cell": [
+      1,
+      2
+    ],
+    "label": "باکس عایق غذا",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 77,
+    "file": "assets/mockups/077-delivery-13.webp",
+    "source_atlas": "assets/atlases/delivery.webp",
+    "grid_cell": [
+      1,
+      3
+    ],
+    "label": "لباس کامل پیک",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 78,
+    "file": "assets/mockups/078-delivery-21.webp",
+    "source_atlas": "assets/atlases/delivery.webp",
+    "grid_cell": [
+      2,
+      1
+    ],
+    "label": "خودروی حمل / نمای سه‌رخ",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 79,
+    "file": "assets/mockups/079-delivery-22.webp",
+    "source_atlas": "assets/atlases/delivery.webp",
+    "grid_cell": [
+      2,
+      2
+    ],
+    "label": "خودروی حمل / نمای جانبی",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 80,
+    "file": "assets/mockups/080-delivery-23.webp",
+    "source_atlas": "assets/atlases/delivery.webp",
+    "grid_cell": [
+      2,
+      3
+    ],
+    "label": "خودروی حمل / نمای عقب",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 81,
+    "file": "assets/mockups/081-delivery-31.webp",
+    "source_atlas": "assets/atlases/delivery.webp",
+    "grid_cell": [
+      3,
+      1
+    ],
+    "label": "پیک دوچرخه‌سوار",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 82,
+    "file": "assets/mockups/082-delivery-32.webp",
+    "source_atlas": "assets/atlases/delivery.webp",
+    "grid_cell": [
+      3,
+      2
+    ],
+    "label": "تحویل غذا به مشتری",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 83,
+    "file": "assets/mockups/083-delivery-33.webp",
+    "source_atlas": "assets/atlases/delivery.webp",
+    "grid_cell": [
+      3,
+      3
+    ],
+    "label": "ناوگان تحویل غذا",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 84,
+    "file": "assets/mockups/084-space-11.webp",
+    "source_atlas": "assets/atlases/space.webp",
+    "grid_cell": [
+      1,
+      1
+    ],
+    "label": "سردر افقی شعبه",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 85,
+    "file": "assets/mockups/085-space-12.webp",
+    "source_atlas": "assets/atlases/space.webp",
+    "grid_cell": [
+      1,
+      2
+    ],
+    "label": "تابلوی بیرون‌زده",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 86,
+    "file": "assets/mockups/086-space-13.webp",
+    "source_atlas": "assets/atlases/space.webp",
+    "grid_cell": [
+      1,
+      3
+    ],
+    "label": "ورودی شعبه",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 87,
+    "file": "assets/mockups/087-space-21.webp",
+    "source_atlas": "assets/atlases/space.webp",
+    "grid_cell": [
+      2,
+      1
+    ],
+    "label": "کانتر سفارش",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 88,
+    "file": "assets/mockups/088-space-22.webp",
+    "source_atlas": "assets/atlases/space.webp",
+    "grid_cell": [
+      2,
+      2
+    ],
+    "label": "آشپزخانهٔ باز",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 89,
+    "file": "assets/mockups/089-space-23.webp",
+    "source_atlas": "assets/atlases/space.webp",
+    "grid_cell": [
+      2,
+      3
+    ],
+    "label": "فضای نشستن",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 90,
+    "file": "assets/mockups/090-space-31.webp",
+    "source_atlas": "assets/atlases/space.webp",
+    "grid_cell": [
+      3,
+      1
+    ],
+    "label": "تابلوی منو",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 91,
+    "file": "assets/mockups/091-space-32.webp",
+    "source_atlas": "assets/atlases/space.webp",
+    "grid_cell": [
+      3,
+      2
+    ],
+    "label": "قفسهٔ تحویل",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 92,
+    "file": "assets/mockups/092-digital-11.webp",
+    "source_atlas": "assets/atlases/digital.webp",
+    "grid_cell": [
+      1,
+      1
+    ],
+    "label": "سایت / صفحهٔ موبایل",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 93,
+    "file": "assets/mockups/093-digital-12.webp",
+    "source_atlas": "assets/atlases/digital.webp",
+    "grid_cell": [
+      1,
+      2
+    ],
+    "label": "سایت / منوی موبایل",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 94,
+    "file": "assets/mockups/094-digital-13.webp",
+    "source_atlas": "assets/atlases/digital.webp",
+    "grid_cell": [
+      1,
+      3
+    ],
+    "label": "سایت / جزئیات محصول",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 95,
+    "file": "assets/mockups/095-digital-21.webp",
+    "source_atlas": "assets/atlases/digital.webp",
+    "grid_cell": [
+      2,
+      1
+    ],
+    "label": "سایت / لپ‌تاپ",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 96,
+    "file": "assets/mockups/096-digital-22.webp",
+    "source_atlas": "assets/atlases/digital.webp",
+    "grid_cell": [
+      2,
+      2
+    ],
+    "label": "سبد خرید / دسکتاپ",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 97,
+    "file": "assets/mockups/097-digital-23.webp",
+    "source_atlas": "assets/atlases/digital.webp",
+    "grid_cell": [
+      2,
+      3
+    ],
+    "label": "کیوسک سفارش",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 98,
+    "file": "assets/mockups/098-digital-31.webp",
+    "source_atlas": "assets/atlases/digital.webp",
+    "grid_cell": [
+      3,
+      1
+    ],
+    "label": "رهگیری سفارش",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 99,
+    "file": "assets/mockups/099-digital-32.webp",
+    "source_atlas": "assets/atlases/digital.webp",
+    "grid_cell": [
+      3,
+      2
+    ],
+    "label": "قالب شبکهٔ اجتماعی",
+    "aspect_ratio": 1.5
+  },
+  {
+    "number": 100,
+    "file": "assets/mockups/100-digital-33.webp",
+    "source_atlas": "assets/atlases/digital.webp",
+    "grid_cell": [
+      3,
+      3
+    ],
+    "label": "نمای واکنش‌گرا",
+    "aspect_ratio": 1.5
+  }
+]
