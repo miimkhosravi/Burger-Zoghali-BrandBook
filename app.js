@@ -27,6 +27,74 @@ const deck = document.createElement('div');
 deck.className = 'slide-deck';
 deck.setAttribute('aria-label', 'اسلایدهای برندبوک');
 const slides = [];
+function positionComposition(svg, vertical = false) {
+  const wordmarks = svg.querySelectorAll('svg');
+  const boxes = vertical ? [[300, 330, 360, 85], [300, 445, 360, 58]] : [[90, 159, 480, 114], [90, 299, 480, 77]];
+  wordmarks.forEach((mark, index) => {
+    ['x', 'y', 'width', 'height'].forEach((key, i) => mark.setAttribute(key, boxes[index][i]));
+    mark.querySelector('image')?.setAttribute('opacity', '.5');
+  });
+  const symbol = svg.querySelector('image[href$="burger-symbol.svg"]');
+  // The source SVG has internal vertical whitespace; these viewports place its visible silhouette on square grid bounds.
+  const symbolBox = vertical ? [360, 47.43, 240, 260.57] : [600, 137, 240, 260];
+  ['x', 'y', 'width', 'height'].forEach((key, i) => symbol.setAttribute(key, symbolBox[i]));
+  symbol.setAttribute('preserveAspectRatio', 'none');
+  symbol.setAttribute('opacity', '.5');
+  // One path per measurement ensures that both arrowheads attach to the actual endpoints.
+  svg.querySelectorAll('.composition-measure-extra').forEach((path) => path.remove());
+  const measure = svg.querySelector('.composition-measure');
+  const measurements = vertical ? ['M360 47H600', 'M675 60V300', 'M690 415V445', 'M300 516H660'] : ['M90 118H570', 'M885 150V390', 'M600 440H840'];
+  measure.setAttribute('d', measurements[0]);
+  measurements.slice(1).forEach((d) => {
+    const path = measure.cloneNode(false);
+    path.classList.add('composition-measure-extra');
+    path.setAttribute('d', d);
+    measure.after(path);
+  });
+  svg.querySelector('.composition-extension').setAttribute('d', vertical ? 'M360 60V47M600 60V47M600 60H675M600 300H675M660 415H690M660 445H690M300 506V516M660 506V516' : 'M90 159V118M570 159V118M840 150H885M840 390H885M600 390V440M840 390V440');
+  let clearZone = svg.querySelector('.composition-clear-zone');
+  if (!clearZone) {
+    clearZone = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    clearZone.setAttribute('class', 'composition-clear-zone');
+    wordmarks[0].before(clearZone);
+  }
+  const zone = vertical ? [330, 30, 300, 300] : [570, 120, 300, 300];
+  ['x', 'y', 'width', 'height'].forEach((key, i) => clearZone.setAttribute(key, zone[i]));
+  const extraLabel = svg.querySelector('.composition-symbol-width');
+  if (vertical) extraLabel?.remove();
+  else if (!extraLabel) {
+    const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    label.setAttribute('class', 'composition-symbol-width');
+    label.setAttribute('x', '720'); label.setAttribute('y', '460'); label.textContent = '8x';
+    svg.append(label);
+  }
+  if (vertical && !svg.querySelector('.composition-wordmark-gap')) {
+    const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    label.setAttribute('class', 'composition-wordmark-gap');
+    svg.append(label);
+  }
+  if (vertical && !svg.querySelector('.composition-wordmark-width')) {
+    const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    label.setAttribute('class', 'composition-wordmark-width');
+    svg.append(label);
+  }
+  const labels = svg.querySelectorAll('text');
+  labels.forEach((label, index) => {
+    const values = vertical ? [[480, 36, '8x'], [705, 185, '8x'], [715, 435, '1x'], [480, 533, '12x']] : [[330, 106, '16x'], [910, 270, '8x'], [720, 460, '8x']];
+    labels[index].setAttribute('x', values[index][0]); labels[index].setAttribute('y', values[index][1]); labels[index].textContent = values[index][2];
+  });
+  if (vertical) {
+    // Scale the artwork and its grid together so one unit remains square and aligned.
+    const artwork = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    artwork.setAttribute('class', 'composition-artwork');
+    artwork.setAttribute('transform', 'translate(48 27) scale(.9)');
+    [...svg.children].filter((child) => child.localName !== 'defs' && (child.localName !== 'rect' || child.classList.contains('composition-clear-zone'))).forEach((child) => artwork.append(child));
+    svg.append(artwork);
+    svg.querySelector('pattern').setAttribute('patternTransform', 'translate(48 27) scale(.9)');
+  }
+  svg.setAttribute('aria-label', vertical ? 'ترکیب عمودی دو لوگوتایپ با فاصلهٔ یک واحد و نشانهٔ مربعی هشت در هشت واحد با حریم امن یک واحدی روی گرید' : 'ترکیب افقی دو لوگوتایپ با عرض ۱۶ واحد، حریم امن یک واحدی دور نشانه و نشانهٔ مربعی هشت در هشت واحد');
+}
+let documentPageNumber = 0;
 function addSlide(nodes, chapter, kind = 'detail') {
   const slide = document.createElement('section');
   slide.className = `book-slide ${kind}`;
@@ -37,6 +105,11 @@ function addSlide(nodes, chapter, kind = 'detail') {
   slide.append(canvas);
   deck.append(slide);
   slides.push(slide);
+  if (kind !== 'cover') {
+    documentPageNumber += 1;
+    const pageNumber = String(documentPageNumber).padStart(3, '0');
+    canvas.querySelector('.slide-page-number')?.replaceChildren(document.createTextNode(pageNumber));
+  }
   return slide;
 }
 function sectionBar(number, title, item = '') {
@@ -104,7 +177,8 @@ for (const chapter of chapters) {
     const bar = document.createElement('div');
     bar.className = 'slide-page-bar';
     const cardLabel = card?.querySelector('.card-label')?.textContent.trim() || card?.querySelector('.mock-caption span')?.textContent.trim() || chapterNumber;
-    const cardTitle = detailTitle || card?.querySelector('.mock-caption b')?.textContent.trim() || card?.querySelector('h3')?.textContent.trim() || '';
+    const rawCardTitle = detailTitle || card?.querySelector('.mock-caption b')?.textContent.trim() || card?.querySelector('h3')?.textContent.trim() || '';
+    const cardTitle = rawCardTitle === 'ترکیب نماد، فارسی، انگلیسی و 1969' ? 'ترکیب افقی نشانه و لوگوتایپ‌ها' : rawCardTitle;
     const baseSection = ['01', '02', '03', '04'].includes(chapterNumber) ? 'المان‌های پایه' : title;
     bar.innerHTML = `<span class="slide-page-number">${cardLabel}</span><span class="slide-page-context"><b>${baseSection}</b>${cardTitle ? `<i aria-hidden="true"></i><span>${cardTitle}</span>` : ''}</span>`;
     if (card?.classList.contains('mock-card')) bar.classList.add('mock-page-bar');
@@ -199,6 +273,14 @@ for (const chapter of chapters) {
       return;
     }
     if (card?.classList.contains('mock-card')) card.querySelector('.mock-caption')?.remove();
+    if (originalCardTitle === 'ترکیب نماد، فارسی، انگلیسی و 1969') {
+      card.classList.add('bilingual-composition-card');
+      card.replaceChildren();
+      card.innerHTML = `<svg class="composition-grid" viewBox="0 0 960 540" preserveAspectRatio="none" role="img" aria-label="ترکیب اندازه‌گذاری‌شدهٔ لوگوتایپ فارسی و انگلیسی با نماد برگر"><defs><pattern id="composition-grid-pattern" width="30" height="30" patternUnits="userSpaceOnUse"><path d="M30 0H0V30" fill="none" stroke="#38383c" stroke-width=".7"/></pattern><marker id="composition-arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#d9232e"/></marker><clipPath id="composition-fa-crop"><rect x="145" y="300" width="1245" height="265"/><rect x="145" y="270" width="485" height="30"/><rect x="905" y="270" width="485" height="30"/></clipPath></defs><rect width="960" height="540" fill="#0b0b0c"/><rect width="960" height="540" fill="url(#composition-grid-pattern)"/><svg x="175" y="158" width="540" height="126" viewBox="145 270 1245 295" preserveAspectRatio="none"><image href="./assets/reference/logo-reference.jpg" width="1536" height="1024" clip-path="url(#composition-fa-crop)" style="filter:invert(1);mix-blend-mode:screen"/></svg><svg x="175" y="302" width="540" height="86" viewBox="170 576 1200 192" preserveAspectRatio="none"><image href="./assets/reference/logo-reference.jpg" width="1536" height="1024" style="filter:invert(1);mix-blend-mode:screen"/></svg><image href="./assets/reference/burger-symbol.svg" x="735" y="158" width="212" height="230"/><path class="composition-measure" marker-start="url(#composition-arrow)" marker-end="url(#composition-arrow)" d="M175 126H715M958 158V388"/><path class="composition-extension" d="M175 158V126M715 158V126M947 158H958M947 388H958M175 284H715M175 302H715"/><text x="445" y="114">18x</text><text x="930" y="278">7.7x</text></svg>`;
+      const composition = card.querySelector('.composition-grid');
+      composition.setAttribute('viewBox', '0 20 960 500');
+      positionComposition(composition);
+    }
     if (card) {
       const description = [...card.children].find(node => node.tagName === 'P');
       const visual = [...card.children].find(node => !['.card-label', 'h3', 'p'].some(selector => node.matches(selector)));
@@ -256,6 +338,10 @@ for (const chapter of chapters) {
             card.querySelector('p')?.remove();
             safetyCard.querySelector('p')?.remove();
             card.append(combined);
+            if (title === 'ساختار نشانه‌نوشتهٔ انگلیسی') {
+              card.classList.add('manshoor-slide');
+              card.innerHTML = `<svg class="manshoor-reference" viewBox="0 0 960 540" preserveAspectRatio="none" role="img" aria-label="ساختار و حریم امن لوگوتایپ انگلیسی"><defs><pattern id="english-grid" width="30" height="30" patternUnits="userSpaceOnUse"><path d="M30 0H0V30" fill="none" stroke="#38383c" stroke-width=".7"/></pattern><marker id="english-arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#d9232e"/></marker></defs><rect width="960" height="540" fill="#0b0b0c"/><rect width="960" height="540" fill="url(#english-grid)"/><line x1="0" y1="270" x2="960" y2="270" stroke="#55545a" stroke-width="2"/><svg x="180" y="90" width="600" height="96" viewBox="170 576 1200 192" preserveAspectRatio="none"><image href="./assets/reference/logo-reference.jpg" width="1536" height="1024" style="filter:invert(1);mix-blend-mode:screen;opacity:.5"/></svg><path class="dimension" marker-start="url(#english-arrow)" marker-end="url(#english-arrow)" d="M180 55H780M815 90V186"/><path class="dimension-extension" d="M180 90V55M780 90V55M780 90H815M780 186H815"/><text x="480" y="45">20x</text><text x="835" y="143">3.2x</text><rect x="150" y="330" width="660" height="156" fill="none" stroke="#d9232e" stroke-width="1" stroke-dasharray="6 6"/><svg x="180" y="360" width="600" height="96" viewBox="170 576 1200 192" preserveAspectRatio="none"><image href="./assets/reference/logo-reference.jpg" width="1536" height="1024" style="filter:invert(1);mix-blend-mode:screen;opacity:.5"/></svg><rect x="780" y="330" width="30" height="30" fill="none" stroke="#d9232e" stroke-dasharray="5 5"/><text x="795" y="349">1x</text></svg>`;
+            }
             if (title === 'ساختار نشانه‌نوشتهٔ فارسی') {
               fetch('./assets/reference/logotype-farsi-layout.svg')
                 .then(response => response.text())
@@ -267,6 +353,35 @@ for (const chapter of chapters) {
                   reference.setAttribute('preserveAspectRatio', 'none');
                   const defs = reference.querySelector('defs');
                   defs?.remove();
+                  // Replace the temporary wordmark with the approved Persian artwork used on slide 26.
+                  reference.querySelectorAll('g.cls-6,.cls-7').forEach(node => node.remove());
+                  const logoNs = 'http://www.w3.org/2000/svg';
+                  for (const y of [60, 330]) {
+                    const logo = document.createElementNS(logoNs, 'svg');
+                    logo.setAttribute('x', '210'); logo.setAttribute('y', String(y));
+                    logo.setAttribute('width', '540'); logo.setAttribute('height', '150');
+                    logo.setAttribute('viewBox', '145 270 1245 295');
+                    logo.setAttribute('preserveAspectRatio', 'none');
+                    const clip = document.createElementNS(logoNs, 'clipPath');
+                    clip.setAttribute('id', `slide26-logotype-crop-${y}`);
+                    for (const attrs of [
+                      ['x', '145', 'y', '300', 'width', '1245', 'height', '265'],
+                      ['x', '145', 'y', '270', 'width', '485', 'height', '30'],
+                      ['x', '905', 'y', '270', 'width', '485', 'height', '30']
+                    ]) {
+                      const clipRect = document.createElementNS(logoNs, 'rect');
+                      for (let i = 0; i < attrs.length; i += 2) clipRect.setAttribute(attrs[i], attrs[i + 1]);
+                      clip.append(clipRect);
+                    }
+                    logo.append(clip);
+                    const image = document.createElementNS(logoNs, 'image');
+                    image.setAttribute('href', './assets/reference/logo-reference.jpg');
+                    image.setAttribute('x', '0'); image.setAttribute('y', '0');
+                    image.setAttribute('width', '1536'); image.setAttribute('height', '1024');
+                    image.setAttribute('clip-path', `url(#slide26-logotype-crop-${y})`);
+                    image.style.filter = 'invert(1)'; image.style.opacity = '.5'; image.style.mixBlendMode = 'screen';
+                    logo.append(image); reference.append(logo);
+                  }
                   reference.querySelectorAll('.cls-1').forEach(node => { node.style.stroke = '#38383c'; node.style.strokeWidth = '.7px'; });
                   reference.querySelectorAll('.cls-2,.cls-3,.cls-4').forEach(node => { node.style.stroke = '#d9232e'; });
                   reference.querySelectorAll('.cls-5').forEach(node => { node.style.stroke = '#55545a'; });
@@ -290,7 +405,7 @@ for (const chapter of chapters) {
                 })
                 .catch(error => console.error(error));
             }
-            const mergedSlide = page([card], card);
+            const mergedSlide = page([card], card, title.replace('ساختار ', 'ساختار و حاشیه امنیت '));
             dividerEntries.push({title, slide: mergedSlide}, {title: safetyTitle, slide: mergedSlide});
             index++;
             continue;
@@ -319,7 +434,7 @@ for (const chapter of chapters) {
       const button = document.createElement('button');
       button.type = 'button';
       button.textContent = entry.title === 'حاشیه امنیت شعار / اندازه' ? 'حاشیه امنیت و اندازه شعار' : entry.title;
-      button.addEventListener('click', () => show(slides.indexOf(entry.slide)));
+      button.addEventListener('click', () => { const target = slides.indexOf(entry.slide); if (target >= 0) show(target); });
       item.append(button);
       list.append(item);
     });
@@ -335,6 +450,50 @@ if (slides[3]) {
 const endTitle = document.createElement('h1');
 endTitle.textContent = 'خوشمزه، مثل گذشته';
 addSlide([endTitle, closing], 'closing', 'end-slide');
+const omittedPageNumbers = [8, 9, 10, 11, 15, 16];
+const omittedSlides = omittedPageNumbers.map(number => slides[number - 1]).filter(Boolean);
+const omittedTitles = new Set(omittedSlides.map(slide => slide.querySelector('.slide-page-context span')?.textContent).filter(Boolean));
+omittedSlides.forEach(slide => { slide.remove(); slides.splice(slides.indexOf(slide), 1); });
+const removedCurrentSlides = [8, 9, 10].map(number => slides[number - 1]).filter(Boolean);
+removedCurrentSlides.forEach(slide => {
+  const title = slide.querySelector('.slide-page-context span')?.textContent;
+  if (title) omittedTitles.add(title);
+  slide.remove();
+  slides.splice(slides.indexOf(slide), 1);
+});
+const horizontalSlide = slides[6];
+if (horizontalSlide?.querySelector('.bilingual-composition-card')) {
+  const verticalCard = horizontalSlide.querySelector('.bilingual-composition-card').cloneNode(true);
+  const verticalSvg = verticalCard.querySelector('.composition-grid');
+  verticalSvg.innerHTML = verticalSvg.innerHTML.replaceAll('composition-arrow', 'composition-arrow-vertical').replaceAll('composition-grid-pattern', 'composition-grid-pattern-vertical').replaceAll('composition-fa-crop', 'composition-fa-crop-vertical');
+  positionComposition(verticalSvg, true);
+  const verticalSlide = addSlide([sectionBar('', 'المان‌های پایه', 'ترکیب عمودی نشانه و لوگوتایپ‌ها'), verticalCard], 'essentials');
+  slides.pop();
+  slides.splice(7, 0, verticalSlide);
+  deck.insertBefore(verticalSlide, horizontalSlide.nextSibling);
+  const horizontalTopic = [...deck.querySelectorAll('.divider-topic-list button')].find(button => button.textContent === 'ترکیب نماد، فارسی، انگلیسی و 1969');
+  if (horizontalTopic) {
+    horizontalTopic.textContent = 'ترکیب افقی نشانه و لوگوتایپ‌ها';
+    const verticalTopic = document.createElement('li');
+    const verticalButton = document.createElement('button');
+    verticalButton.type = 'button';
+    verticalButton.textContent = 'ترکیب عمودی نشانه و لوگوتایپ‌ها';
+    verticalButton.addEventListener('click', () => show(slides.indexOf(verticalSlide)));
+    verticalTopic.append(verticalButton);
+    horizontalTopic.closest('li').after(verticalTopic);
+  }
+}
+slides.forEach((slide, index) => {
+  if (index) slide.querySelector('.slide-page-number')?.replaceChildren(document.createTextNode(String(index).padStart(3, '0')));
+});
+deck.querySelectorAll('.divider-topic-list button').forEach(button => {
+  if (omittedTitles.has(button.textContent) || [
+    'قوانین نمایش نشانهٔ انگلیسی در وضعیت افقی و عمودی',
+    'حاشیه امنیت نشانهٔ انگلیسی در وضعیت افقی و عمودی',
+    'قوانین نمایش نشانهٔ فارسی در وضعیت افقی و عمودی',
+    'حاشیه امنیت نشانهٔ فارسی در وضعیت افقی و عمودی'
+  ].includes(button.textContent)) button.closest('li')?.remove();
+});
 content.append(deck);
 const controls = document.createElement('div');
 controls.className = 'slide-controls';
@@ -376,9 +535,10 @@ function fit() {
   const slide = slides[current];
   const canvas = slide.firstElementChild;
   const width = 1100;
-  const scale = Math.min(slide.clientWidth / width, slide.clientHeight / Math.max(1, canvas.scrollHeight));
-  canvas.style.width = `${slide.clientWidth / scale}px`;
-  canvas.style.height = `${slide.clientHeight / scale}px`;
+  const height = width * 9 / 16;
+  const scale = Math.min(slide.clientWidth / width, slide.clientHeight / height);
+  canvas.style.width = `${width}px`;
+  canvas.style.height = `${height}px`;
   canvas.style.left = '0';
   canvas.style.top = '0';
   canvas.style.transformOrigin = 'top left';

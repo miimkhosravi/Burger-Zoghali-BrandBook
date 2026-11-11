@@ -177,6 +177,20 @@ html,body{height:100%;overflow:hidden;scroll-behavior:auto}
 .manshoor-reference .manshoor-reference-dimensions text{fill:#fff;font:700 14px Aileron,sans-serif;text-anchor:middle}
 .manshoor-reference .manshoor-reference-dimensions .safety-clearance{fill:none;stroke:#d9232e;stroke-width:1;stroke-dasharray:5 5}
 .manshoor-reference .manshoor-reference-dimensions .safety-label{fill:#fff;font:700 12px Aileron,sans-serif;text-anchor:middle}
+.manshoor-reference .dimension{fill:none;stroke:#d9232e;stroke-width:1.6}
+.manshoor-reference .dimension-extension{fill:none;stroke:#d9232e;stroke-width:1;stroke-dasharray:5 5}
+.manshoor-reference text{fill:#fff;font:700 14px Aileron,sans-serif;text-anchor:middle}
+.slide-canvas>.bilingual-composition-card{height:calc(100% - 48px);flex:0 0 calc(100% - 48px);padding:0!important;background:#0b0b0c}
+.composition-grid{display:block;width:100%;height:100%}
+.composition-grid .composition-measure{fill:none;stroke:#d9232e;stroke-width:1.6}
+.composition-grid .composition-extension{fill:none;stroke:#d9232e;stroke-width:1;stroke-dasharray:5 5}
+.composition-grid .composition-clear-zone{fill:none;stroke:#d9232e;stroke-width:1;stroke-dasharray:6 6;opacity:.65}
+.composition-grid text{fill:#fff;font:700 14px Aileron,sans-serif;text-anchor:middle}
+.bilingual-composition{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px}
+.bilingual-composition svg:first-child{width:58%;height:27%;overflow:hidden}
+.bilingual-composition svg:nth-child(2){width:58%;height:16%;overflow:hidden}
+.composition-year{width:58%;display:flex;align-items:center;gap:18px;color:#fff;font:700 25px Aileron,sans-serif;letter-spacing:.12em}
+.composition-year i{height:2px;flex:1;background:#f5f4f1}
 .architecture-safety .safe-label{fill:#fff;font-family:IRANYekanX,sans-serif;font-size:13px;font-weight:700;text-anchor:middle}
 @media(max-width:720px){.architecture-panels{grid-template-columns:1fr}.architecture-panel{min-height:260px}}
 .new-symbol-construction image{filter:none!important;mix-blend-mode:normal!important;opacity:1!important}.sidebar-brand-symbol[src$="burger-symbol.svg"],.identity-art.symbol[src$="burger-symbol.svg"]{filter:none!important;mix-blend-mode:normal!important;object-fit:contain}
@@ -269,10 +283,8 @@ html,body{height:100%;overflow:hidden;scroll-behavior:auto}
 .slide-page-number{font-family:IRANYekanX,sans-serif;direction:ltr;white-space:nowrap;color:var(--paper);font-size:12px}
 .slide-page-context{display:flex;align-items:center;gap:12px;direction:rtl;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .slide-page-context b{color:var(--paper);font-weight:700}.slide-page-context i{height:20px;width:1px;background:var(--red);display:block;flex:none}.slide-page-context span{overflow:hidden;text-overflow:ellipsis}
-.book-slide:has(.architecture-card) .slide-page-bar{height:48px;min-height:48px;flex:0 0 48px;font-family:IRANYekanX,sans-serif;font-size:13px;line-height:1.4}
-.book-slide:has(.architecture-card) .slide-page-number,.book-slide:has(.architecture-card) .slide-page-context{font-family:IRANYekanX,sans-serif}
-.book-slide:has(.manshoor-slide) .slide-page-bar{height:48px;min-height:48px;flex:0 0 48px;font-family:IRANYekanX,sans-serif;font-size:13px;line-height:1.4}
-.book-slide:has(.manshoor-slide) .slide-page-number,.book-slide:has(.manshoor-slide) .slide-page-context{font-family:IRANYekanX,sans-serif}
+.slide-page-bar{min-height:48px;flex:0 0 48px;font-family:IRANYekanX,sans-serif;line-height:1.4}
+.slide-page-number,.slide-page-context{font-family:IRANYekanX,sans-serif}
 .book-slide:has(.manshoor-slide) .combined-wordmark-card{height:calc(100% - 48px)!important;flex:0 0 calc(100% - 48px)!important}
 .book-slide:has(.manshoor-slide) .slide-canvas{overflow:hidden}
 .book-slide:has(.manshoor-slide) .manshoor-reference{overflow:hidden}
@@ -283,4 +295,4 @@ html,body{height:100%;overflow:hidden;scroll-behavior:auto}
 .slide-canvas>.mock-card{aspect-ratio:auto;height:calc(100% - 48px);width:100%;flex:none;overflow:hidden}
 .slide-canvas>.mock-card .mock-photo{aspect-ratio:16/9;width:100%;height:100%;min-height:0;flex:1;object-fit:contain}
 .slide-canvas>.card>p{flex:none;width:100%;max-width:none;margin:0 0 18px;color:var(--soft);font-size:14px;line-height:1.9}
-@media(max-width:720px){.slide-page-bar{height:38px;padding:0 10px;font-size:9px;gap:8px}.slide-page-number{font-size:9px}.slide-page-context{gap:6px}.slide-page-context i{height:14px}.slide-canvas>.card>p{font-size:11px;margin-bottom:9px}}
+@media(max-width:720px){.slide-page-bar{padding:0 20px}.slide-canvas>.card>p{font-size:11px;margin-bottom:9px}}
