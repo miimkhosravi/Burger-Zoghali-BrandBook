@@ -170,7 +170,7 @@ for (const chapter of chapters) {
             svg.removeAttribute('id');
             svg.setAttribute('class', 'architecture-reference');
             svg.setAttribute('viewBox', '0 20 960 500');
-            svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+            svg.setAttribute('preserveAspectRatio', 'none');
             const ns = 'http://www.w3.org/2000/svg';
             const defs = document.createElementNS(ns, 'defs');
             defs.innerHTML = '<pattern id="approved-grid" x="12" y="0" width="36" height="36" patternUnits="userSpaceOnUse"><path d="M36 0H0V36" fill="none" stroke="#38383c" stroke-width=".7"/></pattern><marker id="approved-arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#d9232e"/></marker></defs>';
@@ -243,9 +243,53 @@ for (const chapter of chapters) {
               panel.append(heading, figure);
               combined.append(panel);
             }
+            if (title === 'ساختار نشانه‌نوشتهٔ فارسی') {
+              card.classList.add('manshoor-slide');
+              for (const [figure, kind] of [[topFigure, 'construction'], [bottomFigure, 'safety']]) {
+                const grid = document.createElement('div');
+                grid.className = `manshoor-grid manshoor-${kind}`;
+                grid.innerHTML = `<div class="manshoor-core"><span class="manshoor-wordmark" lang="fa" dir="rtl">برگر ذغالی</span></div>${kind === 'construction' ? '<span class="manshoor-width">W</span><span class="manshoor-height">H</span>' : '<span class="manshoor-unit">1x</span>'}`;
+                figure.replaceChildren(grid);
+                figure.classList.remove('construction');
+              }
+            }
             card.querySelector('p')?.remove();
             safetyCard.querySelector('p')?.remove();
             card.append(combined);
+            if (title === 'ساختار نشانه‌نوشتهٔ فارسی') {
+              fetch('./assets/reference/logotype-farsi-layout.svg')
+                .then(response => response.text())
+                .then(source => {
+                  const reference = new DOMParser().parseFromString(source, 'image/svg+xml').documentElement;
+                  if (reference.localName !== 'svg' || reference.querySelector('parsererror')) throw new Error('Invalid Persian logotype SVG');
+                  reference.removeAttribute('id');
+                  reference.setAttribute('class', 'manshoor-reference');
+                  reference.setAttribute('preserveAspectRatio', 'none');
+                  const defs = reference.querySelector('defs');
+                  defs?.remove();
+                  reference.querySelectorAll('.cls-1').forEach(node => { node.style.stroke = '#38383c'; node.style.strokeWidth = '.7px'; });
+                  reference.querySelectorAll('.cls-2,.cls-3,.cls-4').forEach(node => { node.style.stroke = '#d9232e'; });
+                  reference.querySelectorAll('.cls-5').forEach(node => { node.style.stroke = '#55545a'; });
+                  reference.querySelectorAll('.cls-6').forEach(node => { node.style.opacity = '.5'; });
+                  reference.querySelectorAll('.cls-7').forEach(node => { node.style.fill = '#d9232e'; });
+                  reference.querySelectorAll('polygon').forEach(node => { node.style.fill = '#f5f4f1'; });
+                  // Remove the source's unheaded guide lines; the measured arrows below are the only dimensions shown.
+                  reference.querySelectorAll('g').forEach(group => {
+                    const lines = [...group.querySelectorAll('line')];
+                    if (lines.length && lines.every(line => /(?:cls-2|cls-3|cls-4)/.test(line.getAttribute('class') || ''))) group.remove();
+                  });
+                  const ns = 'http://www.w3.org/2000/svg';
+                  const refDefs = document.createElementNS(ns, 'defs');
+                  refDefs.innerHTML = '<marker id="manshoor-arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#d9232e"/></marker>';
+                  reference.prepend(refDefs);
+                  const dimensions = document.createElementNS(ns, 'g');
+                  dimensions.setAttribute('class', 'manshoor-reference-dimensions');
+                  dimensions.innerHTML = '<path class="dimension" marker-start="url(#manshoor-arrow)" marker-end="url(#manshoor-arrow)" d="M210 42H750"/><path class="dimension" marker-start="url(#manshoor-arrow)" marker-end="url(#manshoor-arrow)" d="M780 60V210"/><path class="dimension-extension" d="M210 60V42M750 60V42M750 60H780M750 210H780"/><text x="480" y="32">18x</text><text x="800" y="140">5x</text><rect class="safety-clearance" x="750" y="300" width="30" height="30"/><text class="safety-label" x="765" y="319">1x</text>';
+                  reference.append(dimensions);
+                  card.replaceChildren(reference);
+                })
+                .catch(error => console.error(error));
+            }
             const mergedSlide = page([card], card);
             dividerEntries.push({title, slide: mergedSlide}, {title: safetyTitle, slide: mergedSlide});
             index++;
