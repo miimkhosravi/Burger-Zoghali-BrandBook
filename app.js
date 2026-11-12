@@ -29,11 +29,20 @@ deck.setAttribute('aria-label', 'اسلایدهای برندبوک');
 const slides = [];
 function positionComposition(svg, vertical = false) {
   const wordmarks = svg.querySelectorAll('svg');
-  const boxes = vertical ? [[300, 330, 360, 85], [300, 445, 360, 58]] : [[90, 159, 480, 114], [90, 299, 480, 77]];
+  const boxes = vertical ? [[300, 330, 360, 96.7], [300, 456.7, 360, 58]] : [[90, 150, 480, 128.9], [90, 309, 480, 77]];
   wordmarks.forEach((mark, index) => {
     ['x', 'y', 'width', 'height'].forEach((key, i) => mark.setAttribute(key, boxes[index][i]));
     mark.querySelector('image')?.setAttribute('opacity', '.5');
   });
+  const persianImage = wordmarks[0]?.querySelector('image');
+  if (persianImage) {
+    persianImage.setAttribute('href', './assets/reference/burger-zoghali-farsi-01.svg');
+    persianImage.removeAttribute('clip-path');
+    persianImage.setAttribute('x', '0'); persianImage.setAttribute('y', '0');
+    persianImage.setAttribute('width', '551'); persianImage.setAttribute('height', '147.96');
+    wordmarks[0].setAttribute('viewBox', '0 0 551 147.96');
+    wordmarks[0].setAttribute('preserveAspectRatio', 'xMidYMid meet');
+  }
   const symbol = svg.querySelector('image[href$="burger-symbol.svg"]');
   // The source SVG has internal vertical whitespace; these viewports place its visible silhouette on square grid bounds.
   const symbolBox = vertical ? [360, 47.43, 240, 260.57] : [600, 137, 240, 260];
@@ -43,7 +52,7 @@ function positionComposition(svg, vertical = false) {
   // One path per measurement ensures that both arrowheads attach to the actual endpoints.
   svg.querySelectorAll('.composition-measure-extra').forEach((path) => path.remove());
   const measure = svg.querySelector('.composition-measure');
-  const measurements = vertical ? ['M360 47H600', 'M675 60V300', 'M690 415V445', 'M300 516H660'] : ['M90 118H570', 'M885 150V390', 'M600 440H840'];
+  const measurements = vertical ? ['M360 47H600', 'M675 60V300', 'M690 426.7V456.7', 'M300 529H660'] : ['M90 118H570', 'M885 150V390', 'M600 440H840'];
   measure.setAttribute('d', measurements[0]);
   measurements.slice(1).forEach((d) => {
     const path = measure.cloneNode(false);
@@ -51,7 +60,7 @@ function positionComposition(svg, vertical = false) {
     path.setAttribute('d', d);
     measure.after(path);
   });
-  svg.querySelector('.composition-extension').setAttribute('d', vertical ? 'M360 60V47M600 60V47M600 60H675M600 300H675M660 415H690M660 445H690M300 506V516M660 506V516' : 'M90 159V118M570 159V118M840 150H885M840 390H885M600 390V440M840 390V440');
+  svg.querySelector('.composition-extension').setAttribute('d', vertical ? 'M360 60V47M600 60V47M600 60H675M600 300H675M660 426.7H690M660 456.7H690M300 515V529M660 515V529' : 'M90 150V118M570 150V118M840 150H885M840 390H885M600 390V440M840 390V440');
   let clearZone = svg.querySelector('.composition-clear-zone');
   if (!clearZone) {
     clearZone = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
@@ -80,7 +89,7 @@ function positionComposition(svg, vertical = false) {
   }
   const labels = svg.querySelectorAll('text');
   labels.forEach((label, index) => {
-    const values = vertical ? [[480, 36, '8x'], [705, 185, '8x'], [715, 435, '1x'], [480, 533, '12x']] : [[330, 106, '16x'], [910, 270, '8x'], [720, 460, '8x']];
+    const values = vertical ? [[480, 36, '8x'], [705, 185, '8x'], [715, 442, '1x'], [480, 542, '12x']] : [[330, 106, '16x'], [910, 270, '8x'], [720, 460, '8x']];
     labels[index].setAttribute('x', values[index][0]); labels[index].setAttribute('y', values[index][1]); labels[index].textContent = values[index][2];
   });
   if (vertical) {
@@ -125,9 +134,6 @@ function checkerRail() {
     for (let column = 0; column < 100; column++) {
       const cell = document.createElement('i');
       cell.className = (row + column) % 2 ? 'black' : 'white';
-      // قانون پترن: خانه‌های قرمز نه افقی و نه عمودی مجاور نیستند و حداقل یک خانه فاصله دارند.
-      const redColumn = row === 0 ? column % 13 === 3 : column % 13 === 9;
-      if (redColumn) cell.className = 'red';
       rail.append(cell);
     }
   }
@@ -141,7 +147,6 @@ for (let row = 0; row < 2; row++) {
   for (let column = 0; column < 32; column++) {
     const square = document.createElement('i');
     square.className = (row + column) % 2 ? 'black' : 'white';
-    if ((row === 0 && [5, 18, 27].includes(column)) || (row === 1 && [10, 23, 30].includes(column))) square.className = 'red';
     checker.append(square);
   }
 }
@@ -165,6 +170,19 @@ for (const chapter of chapters) {
     title = 'ساختار عناصر بصری پایه';
     heading.querySelector('h2').textContent = title;
     heading.querySelector('.slug').textContent = 'Visual Basic Elements';
+    heading.querySelector('.slug').setAttribute('lang', 'en');
+    heading.querySelector('.chapter-sub')?.remove();
+  }
+  if (chapter.id === 'colors') {
+    heading.querySelector('.slug').textContent = 'Color Standard';
+    heading.querySelector('.slug').setAttribute('lang', 'en');
+    heading.querySelector('.chapter-sub')?.remove();
+  }
+  if (chapter.id === 'type') {
+    title = 'سیستم نوشتاری';
+    heading.querySelector('h2').textContent = title;
+    heading.querySelector('.slug').textContent = 'Typography System';
+    heading.querySelector('.slug').setAttribute('lang', 'en');
     heading.querySelector('.chapter-sub')?.remove();
   }
   const dividerBar = sectionBar(chapterNumber, title);
@@ -189,8 +207,8 @@ for (const chapter of chapters) {
       card.querySelector('h3')?.remove();
       [...card.children].find(node => node.tagName === 'P')?.remove();
       const architectureStage = card.querySelector('.identity-stage');
-      if (architectureStage) architectureStage.innerHTML = `<svg class="symbol-construction" viewBox="0 0 960 540" role="img" aria-label="ساختار اندازه‌گذاری‌شدهٔ نماد برگر روی شبکهٔ کامل"><defs><pattern id="symbol-grid" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M60 0H0V60" fill="none" stroke="#4a4a4e" stroke-width="1"/></pattern><marker id="measure-arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#d9232e"/></marker></defs><rect width="960" height="540" fill="url(#symbol-grid)"/><svg x="300" y="60" width="360" height="360" viewBox="632 23 270 270" preserveAspectRatio="none"><image href="./assets/reference/logo-reference.jpg" width="1536" height="1024" opacity=".34"/></svg><g class="construction-guides"><circle cx="480" cy="145" r="136"/><circle cx="480" cy="260" r="88"/><circle cx="480" cy="350" r="58"/><path d="M390 258L480 330L570 258"/><path d="M300 60V420M360 60V420M420 60V420M480 60V420M540 60V420M600 60V420M660 60V420M300 60H660M300 120H660M300 180H660M300 240H660M300 300H660M300 360H660M300 420H660"/></g><g class="construction-measures"><path marker-start="url(#measure-arrow)" marker-end="url(#measure-arrow)" d="M300 462H660"/><path marker-start="url(#measure-arrow)" marker-end="url(#measure-arrow)" d="M718 60V420"/><path marker-start="url(#measure-arrow)" marker-end="url(#measure-arrow)" d="M248 60V120"/><path marker-start="url(#measure-arrow)" marker-end="url(#measure-arrow)" d="M712 236V266"/><path d="M396 366A74 74 0 0 1 448 332"/></g><g class="measure-labels"><g transform="translate(450 478)"><rect width="60" height="30" rx="3"/><text x="30" y="20">6x</text></g><g transform="translate(734 224)"><rect width="60" height="30" rx="3"/><text x="30" y="20">6x</text></g><g transform="translate(174 75)"><rect width="60" height="30" rx="3"/><text x="30" y="20">x</text></g><g transform="translate(744 238)"><rect width="72" height="30" rx="3"/><text x="36" y="20">x/2</text></g><g transform="translate(352 374)"><rect width="72" height="30" rx="3"/><text x="36" y="20">45°</text></g><g transform="translate(744 98)"><rect width="82" height="30" rx="3"/><text x="41" y="20">7x/8</text></g></g></svg>`;
-      if (architectureStage) architectureStage.innerHTML = `<svg class="symbol-construction new-symbol-construction" viewBox="0 0 960 540" role="img" aria-label="ابعاد کلی و فاصلهٔ اجزای نماد سه‌تکهٔ برگر"><defs><pattern id="new-symbol-grid" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M60 0H0V60" fill="none" stroke="#3b3b3f" stroke-width="1"/></pattern><marker id="new-measure-arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#d9232e"/></marker></defs><rect width="960" height="540" fill="url(#new-symbol-grid)"/><image href="./assets/reference/burger-symbol.svg" x="330" y="70" width="300" height="333"/><g class="construction-measures"><path marker-start="url(#new-measure-arrow)" marker-end="url(#new-measure-arrow)" d="M330 448H630"/><path marker-start="url(#new-measure-arrow)" marker-end="url(#new-measure-arrow)" d="M690 70V403"/><path marker-start="url(#new-measure-arrow)" marker-end="url(#new-measure-arrow)" d="M305 218V242"/><path marker-start="url(#new-measure-arrow)" marker-end="url(#new-measure-arrow)" d="M305 302V327"/></g><g class="measure-labels"><g transform="translate(438 462)"><rect width="84" height="32" rx="4"/><text x="42" y="21">7.2x</text></g><g transform="translate(710 220)"><rect width="70" height="32" rx="4"/><text x="35" y="21">8x</text></g><g transform="translate(220 205)"><rect width="70" height="32" rx="4"/><text x="35" y="21">x/2</text></g><g transform="translate(220 292)"><rect width="70" height="32" rx="4"/><text x="35" y="21">x/2</text></g></g></svg>`;
+      if (architectureStage) architectureStage.innerHTML = `<svg class="symbol-construction" viewBox="0 0 960 540" role="img" aria-label="ساختار اندازه‌گذاری‌شدهٔ نماد برگر روی شبکهٔ کامل"><defs><pattern id="symbol-grid" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M60 0H0V60" fill="none" stroke="#4a4a4e" stroke-width="1"/></pattern><marker id="measure-arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#A3121B"/></marker></defs><rect width="960" height="540" fill="url(#symbol-grid)"/><svg x="300" y="60" width="360" height="360" viewBox="632 23 270 270" preserveAspectRatio="none"><image href="./assets/reference/logo-reference.jpg" width="1536" height="1024" opacity=".34"/></svg><g class="construction-guides"><circle cx="480" cy="145" r="136"/><circle cx="480" cy="260" r="88"/><circle cx="480" cy="350" r="58"/><path d="M390 258L480 330L570 258"/><path d="M300 60V420M360 60V420M420 60V420M480 60V420M540 60V420M600 60V420M660 60V420M300 60H660M300 120H660M300 180H660M300 240H660M300 300H660M300 360H660M300 420H660"/></g><g class="construction-measures"><path marker-start="url(#measure-arrow)" marker-end="url(#measure-arrow)" d="M300 462H660"/><path marker-start="url(#measure-arrow)" marker-end="url(#measure-arrow)" d="M718 60V420"/><path marker-start="url(#measure-arrow)" marker-end="url(#measure-arrow)" d="M248 60V120"/><path marker-start="url(#measure-arrow)" marker-end="url(#measure-arrow)" d="M712 236V266"/><path d="M396 366A74 74 0 0 1 448 332"/></g><g class="measure-labels"><g transform="translate(450 478)"><rect width="60" height="30" rx="3"/><text x="30" y="20">6x</text></g><g transform="translate(734 224)"><rect width="60" height="30" rx="3"/><text x="30" y="20">6x</text></g><g transform="translate(174 75)"><rect width="60" height="30" rx="3"/><text x="30" y="20">x</text></g><g transform="translate(744 238)"><rect width="72" height="30" rx="3"/><text x="36" y="20">x/2</text></g><g transform="translate(352 374)"><rect width="72" height="30" rx="3"/><text x="36" y="20">45°</text></g><g transform="translate(744 98)"><rect width="82" height="30" rx="3"/><text x="41" y="20">7x/8</text></g></g></svg>`;
+      if (architectureStage) architectureStage.innerHTML = `<svg class="symbol-construction new-symbol-construction" viewBox="0 0 960 540" role="img" aria-label="ابعاد کلی و فاصلهٔ اجزای نماد سه‌تکهٔ برگر"><defs><pattern id="new-symbol-grid" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M60 0H0V60" fill="none" stroke="#3b3b3f" stroke-width="1"/></pattern><marker id="new-measure-arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#A3121B"/></marker></defs><rect width="960" height="540" fill="url(#new-symbol-grid)"/><image href="./assets/reference/burger-symbol.svg" x="330" y="70" width="300" height="333"/><g class="construction-measures"><path marker-start="url(#new-measure-arrow)" marker-end="url(#new-measure-arrow)" d="M330 448H630"/><path marker-start="url(#new-measure-arrow)" marker-end="url(#new-measure-arrow)" d="M690 70V403"/><path marker-start="url(#new-measure-arrow)" marker-end="url(#new-measure-arrow)" d="M305 218V242"/><path marker-start="url(#new-measure-arrow)" marker-end="url(#new-measure-arrow)" d="M305 302V327"/></g><g class="measure-labels"><g transform="translate(438 462)"><rect width="84" height="32" rx="4"/><text x="42" y="21">7.2x</text></g><g transform="translate(710 220)"><rect width="70" height="32" rx="4"/><text x="35" y="21">8x</text></g><g transform="translate(220 205)"><rect width="70" height="32" rx="4"/><text x="35" y="21">x/2</text></g><g transform="translate(220 292)"><rect width="70" height="32" rx="4"/><text x="35" y="21">x/2</text></g></g></svg>`;
       if (architectureStage) {
         const sourceImage = architectureStage.querySelector('image[href$="burger-symbol.svg"]');
         if (sourceImage) {
@@ -202,7 +220,7 @@ for (const chapter of chapters) {
           sourceImage.replaceWith(embedded);
         }
       }
-      if (architectureStage) architectureStage.innerHTML = `<div class="architecture-panels"><section class="architecture-panel architecture-main"><svg class="panel-geometry" viewBox="0 0 480 420" aria-label="ساختار و معماری نشانه"><defs><pattern id="panel-grid-main" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#3b3b3f" stroke-width="1"/></pattern><marker id="panel-arrow-main" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#d9232e"/></marker></defs><rect width="480" height="420" fill="url(#panel-grid-main)"/><svg x="120" y="140" width="240" height="260" viewBox="103.95 89.26 213.33 231.43">${burgerSymbolPaths}</svg><path class="panel-measure" marker-start="url(#panel-arrow-main)" marker-end="url(#panel-arrow-main)" d="M120 410H360"/><path class="panel-measure" marker-start="url(#panel-arrow-main)" marker-end="url(#panel-arrow-main)" d="M386 140V400"/><g class="panel-label"><text x="240" y="405">6x</text><text x="402" y="275">8x</text></g></svg></section><section class="architecture-panel architecture-safety"><svg class="panel-geometry" viewBox="0 0 480 420" aria-label="حریم امن نشانه"><defs><pattern id="panel-grid-safe" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#3b3b3f" stroke-width="1"/></pattern></defs><rect width="480" height="420" fill="url(#panel-grid-safe)"/><svg x="120" y="140" width="240" height="260" viewBox="103.95 89.26 213.33 231.43">${burgerSymbolPaths}</svg><rect class="safe-cell" x="80" y="100" width="320" height="320"/><path class="safe-guide" d="M80 100V420M400 100V420M80 100H400M80 420H400"/><text class="safe-label" x="240" y="88">1x</text></svg></section></div>`;
+      if (architectureStage) architectureStage.innerHTML = `<div class="architecture-panels"><section class="architecture-panel architecture-main"><svg class="panel-geometry" viewBox="0 0 480 420" aria-label="ساختار و معماری نشانه"><defs><pattern id="panel-grid-main" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#3b3b3f" stroke-width="1"/></pattern><marker id="panel-arrow-main" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#A3121B"/></marker></defs><rect width="480" height="420" fill="url(#panel-grid-main)"/><svg x="120" y="140" width="240" height="260" viewBox="103.95 89.26 213.33 231.43">${burgerSymbolPaths}</svg><path class="panel-measure" marker-start="url(#panel-arrow-main)" marker-end="url(#panel-arrow-main)" d="M120 410H360"/><path class="panel-measure" marker-start="url(#panel-arrow-main)" marker-end="url(#panel-arrow-main)" d="M386 140V400"/><g class="panel-label"><text x="240" y="405">6x</text><text x="402" y="275">8x</text></g></svg></section><section class="architecture-panel architecture-safety"><svg class="panel-geometry" viewBox="0 0 480 420" aria-label="حریم امن نشانه"><defs><pattern id="panel-grid-safe" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#3b3b3f" stroke-width="1"/></pattern></defs><rect width="480" height="420" fill="url(#panel-grid-safe)"/><svg x="120" y="140" width="240" height="260" viewBox="103.95 89.26 213.33 231.43">${burgerSymbolPaths}</svg><rect class="safe-cell" x="80" y="100" width="320" height="320"/><path class="safe-guide" d="M80 100V420M400 100V420M80 100H400M80 420H400"/><text class="safe-label" x="240" y="88">1x</text></svg></section></div>`;
       const mainSvg = architectureStage?.querySelector('.architecture-main .panel-geometry');
       if (mainSvg) {
         const mainSymbol = mainSvg.querySelector('svg');
@@ -234,39 +252,7 @@ for (const chapter of chapters) {
       }
       // The approved Illustrator layout defines the actual geometry: a 36-unit
       // module, a 216×216 symbol and a 288×288 clear-space square.
-      if (architectureStage) {
-        fetch('./assets/reference/burger-symbol-slide4-layout.svg')
-          .then(response => { if (!response.ok) throw new Error('Slide 4 SVG unavailable'); return response.text(); })
-          .then(source => {
-            const svg = new DOMParser().parseFromString(source, 'image/svg+xml').documentElement;
-            if (svg.localName !== 'svg' || svg.querySelector('parsererror')) throw new Error('Invalid slide 4 SVG');
-            svg.querySelector('defs')?.remove();
-            svg.removeAttribute('id');
-            svg.setAttribute('class', 'architecture-reference');
-            svg.setAttribute('viewBox', '0 20 960 500');
-            svg.setAttribute('preserveAspectRatio', 'none');
-            const ns = 'http://www.w3.org/2000/svg';
-            const defs = document.createElementNS(ns, 'defs');
-            defs.innerHTML = '<pattern id="approved-grid" x="12" y="0" width="36" height="36" patternUnits="userSpaceOnUse"><path d="M36 0H0V36" fill="none" stroke="#38383c" stroke-width=".7"/></pattern><marker id="approved-arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#d9232e"/></marker></defs>';
-            svg.prepend(defs);
-            const background = document.createElementNS(ns, 'rect');
-            background.setAttribute('x', '0'); background.setAttribute('y', '20'); background.setAttribute('width', '960'); background.setAttribute('height', '500'); background.setAttribute('fill', 'url(#approved-grid)');
-            defs.after(background);
-            const annotations = document.createElementNS(ns, 'g');
-            annotations.setAttribute('class', 'approved-annotations');
-            annotations.innerHTML = '<path class="measure" marker-start="url(#approved-arrow)" marker-end="url(#approved-arrow)" d="M624 448H840"/><path class="measure" marker-start="url(#approved-arrow)" marker-end="url(#approved-arrow)" d="M880 180V396"/><path class="extension" d="M624 396V448M840 396V448M840 180H880M840 396H880"/><text x="732" y="468">6x</text><text x="897" y="291">6x</text><path class="measure" marker-start="url(#approved-arrow)" marker-end="url(#approved-arrow)" d="M600 270V288"/><path class="measure" marker-start="url(#approved-arrow)" marker-end="url(#approved-arrow)" d="M600 324V342"/><text x="578" y="282">0.5x</text><text x="578" y="336">0.5x</text><rect class="clear-module" x="336" y="144" width="36" height="36"/><text x="354" y="166">1x</text>';
-            svg.querySelectorAll(':scope > g').forEach(symbol => symbol.setAttribute('transform', 'translate(0 -36)'));
-            svg.querySelector(':scope > rect.cls-3')?.setAttribute('y', '108');
-            for (const ordinate of [270, 342]) {
-              const guide = svg.querySelector(`line.cls-2[x1="480"][y1="${ordinate}"]`);
-              if (guide) { guide.setAttribute('y1', String(ordinate - 36)); guide.setAttribute('y2', String(ordinate - 36)); }
-            }
-            annotations.setAttribute('transform', 'translate(0 -36)');
-            svg.append(annotations);
-            architectureStage.replaceChildren(svg);
-          })
-          .catch(error => console.error(error));
-      }
+
     }
     if (card?.querySelector('h3')?.textContent.trim() === 'حاشیه امنیت نشانه') {
       if (chapter.id === 'essentials' && architectureSlide) dividerEntries.push({title: 'حاشیه امنیت نشانه', slide: architectureSlide});
@@ -276,7 +262,7 @@ for (const chapter of chapters) {
     if (originalCardTitle === 'ترکیب نماد، فارسی، انگلیسی و 1969') {
       card.classList.add('bilingual-composition-card');
       card.replaceChildren();
-      card.innerHTML = `<svg class="composition-grid" viewBox="0 0 960 540" preserveAspectRatio="none" role="img" aria-label="ترکیب اندازه‌گذاری‌شدهٔ لوگوتایپ فارسی و انگلیسی با نماد برگر"><defs><pattern id="composition-grid-pattern" width="30" height="30" patternUnits="userSpaceOnUse"><path d="M30 0H0V30" fill="none" stroke="#38383c" stroke-width=".7"/></pattern><marker id="composition-arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#d9232e"/></marker><clipPath id="composition-fa-crop"><rect x="145" y="300" width="1245" height="265"/><rect x="145" y="270" width="485" height="30"/><rect x="905" y="270" width="485" height="30"/></clipPath></defs><rect width="960" height="540" fill="#0b0b0c"/><rect width="960" height="540" fill="url(#composition-grid-pattern)"/><svg x="175" y="158" width="540" height="126" viewBox="145 270 1245 295" preserveAspectRatio="none"><image href="./assets/reference/logo-reference.jpg" width="1536" height="1024" clip-path="url(#composition-fa-crop)" style="filter:invert(1);mix-blend-mode:screen"/></svg><svg x="175" y="302" width="540" height="86" viewBox="170 576 1200 192" preserveAspectRatio="none"><image href="./assets/reference/logo-reference.jpg" width="1536" height="1024" style="filter:invert(1);mix-blend-mode:screen"/></svg><image href="./assets/reference/burger-symbol.svg" x="735" y="158" width="212" height="230"/><path class="composition-measure" marker-start="url(#composition-arrow)" marker-end="url(#composition-arrow)" d="M175 126H715M958 158V388"/><path class="composition-extension" d="M175 158V126M715 158V126M947 158H958M947 388H958M175 284H715M175 302H715"/><text x="445" y="114">18x</text><text x="930" y="278">7.7x</text></svg>`;
+      card.innerHTML = `<svg class="composition-grid" viewBox="0 0 960 540" preserveAspectRatio="none" role="img" aria-label="ترکیب اندازه‌گذاری‌شدهٔ لوگوتایپ فارسی و انگلیسی با نماد برگر"><defs><pattern id="composition-grid-pattern" width="30" height="30" patternUnits="userSpaceOnUse"><path d="M30 0H0V30" fill="none" stroke="#38383c" stroke-width=".7"/></pattern><marker id="composition-arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#A3121B"/></marker><clipPath id="composition-fa-crop"><rect x="145" y="300" width="1245" height="265"/><rect x="145" y="270" width="485" height="30"/><rect x="905" y="270" width="485" height="30"/></clipPath></defs><rect width="960" height="540" fill="#171717"/><rect width="960" height="540" fill="url(#composition-grid-pattern)"/><svg x="175" y="158" width="540" height="126" viewBox="145 270 1245 295" preserveAspectRatio="none"><image href="./assets/reference/logo-reference.jpg" width="1536" height="1024" clip-path="url(#composition-fa-crop)" style="filter:invert(1);mix-blend-mode:screen"/></svg><svg x="175" y="302" width="540" height="86" viewBox="170 576 1200 192" preserveAspectRatio="none"><image href="./assets/reference/logo-reference.jpg" width="1536" height="1024" style="filter:invert(1);mix-blend-mode:screen"/></svg><image href="./assets/reference/burger-symbol.svg" x="735" y="158" width="212" height="230"/><path class="composition-measure" marker-start="url(#composition-arrow)" marker-end="url(#composition-arrow)" d="M175 126H715M958 158V388"/><path class="composition-extension" d="M175 158V126M715 158V126M947 158H958M947 388H958M175 284H715M175 302H715"/><text x="445" y="114">18x</text><text x="930" y="278">7.7x</text></svg>`;
       const composition = card.querySelector('.composition-grid');
       composition.setAttribute('viewBox', '0 20 960 500');
       positionComposition(composition);
@@ -340,7 +326,7 @@ for (const chapter of chapters) {
             card.append(combined);
             if (title === 'ساختار نشانه‌نوشتهٔ انگلیسی') {
               card.classList.add('manshoor-slide');
-              card.innerHTML = `<svg class="manshoor-reference" viewBox="0 0 960 540" preserveAspectRatio="none" role="img" aria-label="ساختار و حریم امن لوگوتایپ انگلیسی"><defs><pattern id="english-grid" width="30" height="30" patternUnits="userSpaceOnUse"><path d="M30 0H0V30" fill="none" stroke="#38383c" stroke-width=".7"/></pattern><marker id="english-arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#d9232e"/></marker></defs><rect width="960" height="540" fill="#0b0b0c"/><rect width="960" height="540" fill="url(#english-grid)"/><line x1="0" y1="270" x2="960" y2="270" stroke="#55545a" stroke-width="2"/><svg x="180" y="90" width="600" height="96" viewBox="170 576 1200 192" preserveAspectRatio="none"><image href="./assets/reference/logo-reference.jpg" width="1536" height="1024" style="filter:invert(1);mix-blend-mode:screen;opacity:.5"/></svg><path class="dimension" marker-start="url(#english-arrow)" marker-end="url(#english-arrow)" d="M180 55H780M815 90V186"/><path class="dimension-extension" d="M180 90V55M780 90V55M780 90H815M780 186H815"/><text x="480" y="45">20x</text><text x="835" y="143">3.2x</text><rect x="150" y="330" width="660" height="156" fill="none" stroke="#d9232e" stroke-width="1" stroke-dasharray="6 6"/><svg x="180" y="360" width="600" height="96" viewBox="170 576 1200 192" preserveAspectRatio="none"><image href="./assets/reference/logo-reference.jpg" width="1536" height="1024" style="filter:invert(1);mix-blend-mode:screen;opacity:.5"/></svg><rect x="780" y="330" width="30" height="30" fill="none" stroke="#d9232e" stroke-dasharray="5 5"/><text x="795" y="349">1x</text></svg>`;
+              card.innerHTML = `<svg class="manshoor-reference" viewBox="0 0 960 540" preserveAspectRatio="none" role="img" aria-label="ساختار و حریم امن لوگوتایپ انگلیسی"><defs><pattern id="english-grid" width="30" height="30" patternUnits="userSpaceOnUse"><path d="M30 0H0V30" fill="none" stroke="#38383c" stroke-width=".7"/></pattern><marker id="english-arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#A3121B"/></marker></defs><rect width="960" height="540" fill="#171717"/><rect width="960" height="540" fill="url(#english-grid)"/><line x1="0" y1="270" x2="960" y2="270" stroke="#55545a" stroke-width="2"/><svg x="180" y="90" width="600" height="96" viewBox="170 576 1200 192" preserveAspectRatio="none"><image href="./assets/reference/logo-reference.jpg" width="1536" height="1024" style="filter:invert(1);mix-blend-mode:screen;opacity:.5"/></svg><path class="dimension" marker-start="url(#english-arrow)" marker-end="url(#english-arrow)" d="M180 55H780M815 90V186"/><path class="dimension-extension" d="M180 90V55M780 90V55M780 90H815M780 186H815"/><text x="480" y="45">20x</text><text x="835" y="143">3.2x</text><rect x="150" y="330" width="660" height="156" fill="none" stroke="#A3121B" stroke-width="1" stroke-dasharray="6 6"/><svg x="180" y="360" width="600" height="96" viewBox="170 576 1200 192" preserveAspectRatio="none"><image href="./assets/reference/logo-reference.jpg" width="1536" height="1024" style="filter:invert(1);mix-blend-mode:screen;opacity:.5"/></svg><rect x="780" y="330" width="30" height="30" fill="none" stroke="#A3121B" stroke-dasharray="5 5"/><text x="795" y="349">1x</text></svg>`;
             }
             if (title === 'ساختار نشانه‌نوشتهٔ فارسی') {
               fetch('./assets/reference/logotype-farsi-layout.svg')
@@ -360,33 +346,20 @@ for (const chapter of chapters) {
                     const logo = document.createElementNS(logoNs, 'svg');
                     logo.setAttribute('x', '210'); logo.setAttribute('y', String(y));
                     logo.setAttribute('width', '540'); logo.setAttribute('height', '150');
-                    logo.setAttribute('viewBox', '145 270 1245 295');
-                    logo.setAttribute('preserveAspectRatio', 'none');
-                    const clip = document.createElementNS(logoNs, 'clipPath');
-                    clip.setAttribute('id', `slide26-logotype-crop-${y}`);
-                    for (const attrs of [
-                      ['x', '145', 'y', '300', 'width', '1245', 'height', '265'],
-                      ['x', '145', 'y', '270', 'width', '485', 'height', '30'],
-                      ['x', '905', 'y', '270', 'width', '485', 'height', '30']
-                    ]) {
-                      const clipRect = document.createElementNS(logoNs, 'rect');
-                      for (let i = 0; i < attrs.length; i += 2) clipRect.setAttribute(attrs[i], attrs[i + 1]);
-                      clip.append(clipRect);
-                    }
-                    logo.append(clip);
+                    logo.setAttribute('viewBox', '0 0 551 147.96');
+                    logo.setAttribute('preserveAspectRatio', 'xMidYMid meet');
                     const image = document.createElementNS(logoNs, 'image');
-                    image.setAttribute('href', './assets/reference/logo-reference.jpg');
+                    image.setAttribute('href', './assets/reference/burger-zoghali-farsi-01.svg');
                     image.setAttribute('x', '0'); image.setAttribute('y', '0');
-                    image.setAttribute('width', '1536'); image.setAttribute('height', '1024');
-                    image.setAttribute('clip-path', `url(#slide26-logotype-crop-${y})`);
+                    image.setAttribute('width', '551'); image.setAttribute('height', '147.96');
                     image.style.filter = 'invert(1)'; image.style.opacity = '.5'; image.style.mixBlendMode = 'screen';
                     logo.append(image); reference.append(logo);
                   }
                   reference.querySelectorAll('.cls-1').forEach(node => { node.style.stroke = '#38383c'; node.style.strokeWidth = '.7px'; });
-                  reference.querySelectorAll('.cls-2,.cls-3,.cls-4').forEach(node => { node.style.stroke = '#d9232e'; });
+                  reference.querySelectorAll('.cls-2,.cls-3,.cls-4').forEach(node => { node.style.stroke = '#A3121B'; });
                   reference.querySelectorAll('.cls-5').forEach(node => { node.style.stroke = '#55545a'; });
                   reference.querySelectorAll('.cls-6').forEach(node => { node.style.opacity = '.5'; });
-                  reference.querySelectorAll('.cls-7').forEach(node => { node.style.fill = '#d9232e'; });
+                  reference.querySelectorAll('.cls-7').forEach(node => { node.style.fill = '#A3121B'; });
                   reference.querySelectorAll('polygon').forEach(node => { node.style.fill = '#f5f4f1'; });
                   // Remove the source's unheaded guide lines; the measured arrows below are the only dimensions shown.
                   reference.querySelectorAll('g').forEach(group => {
@@ -395,7 +368,7 @@ for (const chapter of chapters) {
                   });
                   const ns = 'http://www.w3.org/2000/svg';
                   const refDefs = document.createElementNS(ns, 'defs');
-                  refDefs.innerHTML = '<marker id="manshoor-arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#d9232e"/></marker>';
+                  refDefs.innerHTML = '<marker id="manshoor-arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#A3121B"/></marker>';
                   reference.prepend(refDefs);
                   const dimensions = document.createElementNS(ns, 'g');
                   dimensions.setAttribute('class', 'manshoor-reference-dimensions');
@@ -437,6 +410,186 @@ for (const chapter of chapters) {
       button.addEventListener('click', () => { const target = slides.indexOf(entry.slide); if (target >= 0) show(target); });
       item.append(button);
       list.append(item);
+    });
+    dividerSlide.firstElementChild.append(list);
+  }
+  if (chapter.id === 'colors') {
+    const topics = [
+      'رنگ‌های اصلی و ثانویه',
+      'گردینت',
+      'رنگ‌های تاکیدی',
+      'رنگ‌های خنثی',
+      'رنگ‌سایه‌ها',
+      'رنگ اصلی و فرعی نشانه',
+      'نشانه در حالت تک‌رنگ',
+      'رنگ نشان بر پس‌زمینهٔ رنگی',
+      'رنگ‌های نشانه به‌صورت سیاه و سفید'
+    ];
+    const list = document.createElement('ul');
+    list.className = 'divider-topic-list color-topic-list';
+    const existingColorSlides = slides.filter(slide => slide.dataset.chapter === 'colors' && slide !== dividerSlide);
+    const paletteSlide = existingColorSlides[0];
+    const paletteScene = document.createElement('div');
+    paletteScene.className = 'palette-scene';
+    paletteScene.setAttribute('aria-label', 'سه رنگ اصلی برند، برگرفته از تصویر زغال، خاکستر و اخگر');
+    paletteScene.innerHTML = `<div class="palette-content"><div class="palette-list">
+      <article class="palette-item palette-heat"><span class="palette-sample" aria-hidden="true"></span><div class="palette-spec"><div class="palette-spec-name"><strong lang="en" dir="ltr">RED</strong><span>قـرمـز</span></div><div class="palette-spec-codes" dir="ltr"><b>#A3121B</b><small>RGB 217 / 35 / 46</small><small>CMYK 0 / 84 / 79 / 15</small></div></div></article>
+      <article class="palette-item palette-charcoal"><span class="palette-sample" aria-hidden="true"></span><div class="palette-spec"><div class="palette-spec-name"><strong lang="en" dir="ltr">BLACK</strong><span>مـشـکی</span></div><div class="palette-spec-codes" dir="ltr"><b>#171717</b><small>RGB 11 / 11 / 12</small><small>CMYK 8 / 8 / 0 / 95</small></div></div></article>
+      <article class="palette-item palette-ash"><span class="palette-sample" aria-hidden="true"></span><div class="palette-spec"><div class="palette-spec-name"><strong lang="en" dir="ltr">WHITE</strong><span>سـفـید</span></div><div class="palette-spec-codes" dir="ltr"><b>#F5F4F1</b><small>RGB 245 / 244 / 241</small><small>CMYK 0 / 0 / 2 / 4</small></div></div></article>
+    </div></div>`;
+    paletteSlide.classList.add('palette-photo-slide');
+    paletteSlide.querySelector('.slide-canvas > .card')?.replaceWith(paletteScene);
+    for (const [slide, topic] of [[existingColorSlides[0], topics[0]], [existingColorSlides[1], topics[2]]]) {
+      const context = slide?.querySelector('.slide-page-context');
+      if (!context) continue;
+      if (!context.querySelector('i')) context.append(document.createElement('i'));
+      let label = context.querySelector('span');
+      if (!label) {
+        label = document.createElement('span');
+        context.append(label);
+      }
+      label.textContent = topic;
+    }
+    const topicSlides = topics.map((topic, index) => {
+      if (index === 0) return existingColorSlides[0];
+      if (index === 2) return existingColorSlides[1];
+      if (index === 1) {
+        const scene = document.createElement('div');
+        scene.className = 'gradient-scene';
+        scene.setAttribute('aria-label', 'گرادیانت خطی از مشکی به قرمز و سفید');
+        scene.innerHTML = `<div class="gradient-bar" aria-hidden="true"></div><div class="gradient-labels" dir="ltr"><div><i class="gradient-dot gradient-dot-black" aria-hidden="true"></i><span><b lang="en">BLACK</b><small>#171717</small></span></div><div><i class="gradient-dot gradient-dot-red" aria-hidden="true"></i><span><b lang="en">RED</b><small>#A3121B</small></span></div><div><i class="gradient-dot gradient-dot-white" aria-hidden="true"></i><span><b lang="en">WHITE</b><small>#F5F4F1</small></span></div></div>`;
+        return addSlide([sectionBar('', 'المان‌های پایه', topic), scene], chapter.id);
+      }
+      if (index === 3) {
+        const scene = document.createElement('div');
+        scene.className = 'neutral-scene';
+        scene.setAttribute('aria-label', 'رنگ‌های خنثی برگرفته از تصویر خاکستر تا زغال');
+        scene.innerHTML = `<div class="neutral-photo" role="img" aria-label="بافت خاکستر روشن تا زغال تیره"></div><div class="neutral-colors">
+          <div class="neutral-color neutral-dust"><strong lang="en">DUST</strong><b dir="ltr">#DEDDD8</b><span lang="en" dir="ltr">RGB 222 / 221 / 216</span><span lang="en" dir="ltr">CMYK 0 / 0 / 3 / 13</span></div>
+          <div class="neutral-color neutral-ash"><strong lang="en">ASH</strong><b dir="ltr">#B0AEAA</b><span lang="en" dir="ltr">RGB 176 / 174 / 170</span><span lang="en" dir="ltr">CMYK 0 / 1 / 3 / 31</span></div>
+          <div class="neutral-color neutral-smoke"><strong lang="en">SMOKE</strong><b dir="ltr">#777572</b><span lang="en" dir="ltr">RGB 119 / 117 / 114</span><span lang="en" dir="ltr">CMYK 0 / 2 / 4 / 53</span></div>
+          <div class="neutral-color neutral-char"><strong lang="en">CHAR</strong><b dir="ltr">#41403F</b><span lang="en" dir="ltr">RGB 65 / 64 / 63</span><span lang="en" dir="ltr">CMYK 0 / 2 / 3 / 75</span></div>
+        </div>`;
+        return addSlide([sectionBar('', 'المان‌های پایه', topic), scene], chapter.id);
+      }
+      if (index === 6) {
+        const image = document.createElement('img');
+        image.className = 'colorway-sheet';
+        image.src = './assets/reference/burger-zoghali-monochrome-colorways.webp';
+        image.alt = 'شش حالت تک‌رنگ نشانه و نشانه‌نوشته بر زمینه‌های مشکی، سفید و قرمز';
+        return addSlide([sectionBar('', 'المان‌های پایه', topic), image], chapter.id);
+      }
+      if (index === 7) {
+        const frame = document.createElement('iframe');
+        frame.src = 'Burger-Zoghali-Gradient-Logo-Demo.html';
+        frame.title = 'آزمون رنگ نشانه برگر ذغالی';
+        frame.style.cssText = 'display:block; width:100%; aspect-ratio:4400/2283; border:0;';
+        return addSlide([sectionBar('', 'المان‌های پایه', topic), frame], chapter.id);
+      }
+      const title = document.createElement('h2');
+      title.className = 'color-topic-heading';
+      title.textContent = topic;
+      return addSlide([sectionBar('', 'المان‌های پایه', topic), title], chapter.id);
+    });
+    const leftoverSlides = existingColorSlides.filter(slide => !topicSlides.includes(slide));
+    const firstColorPage = slides.indexOf(dividerSlide) + 1;
+    slides.splice(firstColorPage, slides.length - firstColorPage, ...topicSlides, ...leftoverSlides);
+    [...topicSlides, ...leftoverSlides].forEach(slide => deck.append(slide));
+    topics.forEach((topic, index) => {
+      const item = document.createElement('li');
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.textContent = topic;
+      button.addEventListener('click', () => show(slides.indexOf(topicSlides[index])));
+      item.append(button);
+      list.append(item);
+    });
+    dividerSlide.firstElementChild.append(list);
+  }
+  if (chapter.id === 'type') {
+    const topics = ['تایپ‌فیس فارسی اصلی','تایپ‌فیس انگلیسی اصلی','عنوان، زیرعنوان و متن بدنه'];
+    const oldSlides = slides.filter(slide => slide.dataset.chapter === 'type' && slide !== dividerSlide);
+    oldSlides.forEach(slide => { slide.remove(); slides.splice(slides.indexOf(slide), 1); });
+    const list = document.createElement('ul');
+    list.className = 'divider-topic-list type-topic-list';
+    const specimens = [
+      {
+        kind: 'fa', name: 'IRANYekanX FaNum', note: '۱۱ وزن · حروف و ارقام فارسی',
+        sample: 'برگر ذغالی',
+        weights: [['Thin', 100], ['UltraLight', 200], ['Light', 300], ['Regular', 400], ['Medium', 500], ['DemiBold', 600], ['Bold', 700], ['ExtraBold', 800], ['Heavy', 900], ['Black', 950], ['ExtraBlack', 1000]],
+        groups: [
+          ['حروف فارسی', 'ا آ ب پ ت ث ج چ ح خ د ذ ر ز ژ س ش', 'ص ض ط ظ ع غ ف ق ک گ ل م ن و ه ی'],
+          ['نویسه‌های تکمیلی', 'ء أ إ ؤ ئ ة ۀ ى ي ك'],
+          ['ارقام فارسی', '۰ ۱ ۲ ۳ ۴ ۵ ۶ ۷ ۸ ۹'],
+          ['نشانه‌ها و کاراکترها', '، ؛ ؟ ! . : « » ( ) [ ]', '٪ ٫ ٬ / - + = × & @ # * …']
+        ]
+      },
+      {
+        kind: 'en', name: 'Aileron', note: 'Six available weights · Latin letters, numerals and symbols',
+        sample: 'Burger Zoghali',
+        weights: [['Thin', 100], ['UltraLight', 200], ['Light', 300], ['Regular', 400], ['Bold', 700], ['Heavy', 900]],
+        groups: [
+          ['حروف بزرگ', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'],
+          ['حروف کوچک', 'abcdefghijklmnopqrstuvwxyz'],
+          ['ارقام', '0123456789'],
+          ['نشانه‌ها و کاراکترها', '.,:;!? " \' ( ) [ ] { }', '@ # $ % & * + − / = < > …']
+        ]
+      }
+    ];
+    function makeSpecimen(config) {
+      const body = document.createElement('div');
+      body.className = `type-specimen type-specimen-${config.kind}`;
+      const heading = document.createElement('div');
+      heading.className = 'type-specimen-head';
+      heading.innerHTML = `<b lang="en" dir="ltr">${config.name}</b><span>${config.note}</span>`;
+      const weights = document.createElement('div');
+      weights.className = 'type-weight-grid';
+      config.weights.forEach(([name, weight]) => {
+        const card = document.createElement('div');
+        card.className = 'type-weight-card';
+        const label = document.createElement('small');
+        label.lang = 'en'; label.dir = 'ltr';
+        label.textContent = `${name} / ${weight}`;
+        const sample = document.createElement('strong');
+        sample.style.fontWeight = weight;
+        sample.textContent = config.sample;
+        if (config.kind === 'en') { sample.lang = 'en'; sample.dir = 'ltr'; }
+        card.append(label, sample);
+        weights.append(card);
+      });
+      const groups = document.createElement('div');
+      groups.className = 'type-glyph-grid';
+      config.groups.forEach(([title, ...lines]) => {
+        const panel = document.createElement('section');
+        panel.className = 'type-glyph-panel';
+        const label = document.createElement('h3');
+        label.textContent = title;
+        panel.append(label);
+        lines.forEach(line => {
+          const text = document.createElement('p');
+          text.textContent = line;
+          if (config.kind === 'en') { text.lang = 'en'; text.dir = 'ltr'; }
+          panel.append(text);
+        });
+        groups.append(panel);
+      });
+      body.append(heading, weights, groups);
+      return body;
+    }
+    const hierarchy = document.createElement('div');
+    hierarchy.className = 'type-hierarchy';
+    hierarchy.innerHTML = '<div class="type-hierarchy-head"><h1>مقدمه</h1><small>عنوان · Heavy / 900</small></div><div class="type-hierarchy-subtitle"><h2>مثل همیشه، خوشمزه</h2><small>زیرعنوان · Bold / 700</small></div><div class="type-hierarchy-body-label">متن بدنه · Regular / 400</div><div class="type-hierarchy-copy"></div>';
+    const hierarchyCopy = hierarchy.querySelector('.type-hierarchy-copy');
+    intro.querySelectorAll('p:not(.intro-lead)').forEach(paragraph => hierarchyCopy.append(paragraph.cloneNode(true)));
+    const bodies = [makeSpecimen(specimens[0]), makeSpecimen(specimens[1]), hierarchy];
+    topics.forEach((topic, index) => {
+      const target = addSlide([sectionBar('', 'المان‌های پایه', topic), bodies[index]], chapter.id);
+      const item = document.createElement('li');
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.textContent = topic;
+      button.addEventListener('click', () => show(slides.indexOf(target)));
+      item.append(button); list.append(item);
     });
     dividerSlide.firstElementChild.append(list);
   }
@@ -514,6 +667,7 @@ const navSections = [...document.querySelectorAll('.nav-section')];
 navSections.forEach(section => {
   const toggle = section.querySelector('.nav-section-toggle');
   if (!toggle || toggle.disabled) return;
+  toggle.querySelector('span').textContent = section.classList.contains('is-open') ? '−' : '+';
   toggle.addEventListener('click', () => {
     const willOpen = !section.classList.contains('is-open');
     navSections.forEach(other => {
@@ -531,6 +685,25 @@ navSections.forEach(section => {
   });
 });
 let current = 0;
+function alignBasicDividerSubtitle() {
+  for (const chapterId of ['essentials', 'colors']) {
+    const divider = slides.find(slide => slide.dataset.chapter === chapterId && slide.classList.contains('divider'));
+    if (!divider || divider.hidden) continue;
+    const persian = divider.querySelector('.chapter-top h2');
+    const english = divider.querySelector('.chapter-top .slug');
+    if (!persian || !english) continue;
+    english.style.letterSpacing = '0px';
+    const canvas = divider.querySelector('.slide-canvas');
+    const scale = canvas.getBoundingClientRect().width / canvas.offsetWidth || 1;
+    const target = persian.getBoundingClientRect().width;
+    const characters = [...english.textContent].length;
+    for (let attempt = 0; attempt < 2; attempt++) {
+      const difference = target - english.getBoundingClientRect().width;
+      const currentSpacing = parseFloat(english.style.letterSpacing) || 0;
+      english.style.letterSpacing = `${currentSpacing + difference / (characters * scale)}px`;
+    }
+  }
+}
 function fit() {
   const slide = slides[current];
   const canvas = slide.firstElementChild;
@@ -550,7 +723,7 @@ function fit() {
     const columns = Math.max(12, Math.floor(rail.clientWidth / 20));
     rail.style.setProperty('grid-template-columns', `repeat(${columns}, 1fr)`, 'important');
     rail.style.setProperty('grid-template-rows', 'repeat(2, 1fr)', 'important');
-    rail.style.setProperty('height', `${(rail.clientWidth / columns) * 2}px`, 'important');
+    rail.style.setProperty('height', `${(rail.clientWidth / columns) * 2 + 2}px`, 'important');
     [...rail.children].forEach((cell, index) => {
       const visible = index < columns * 2;
       cell.style.display = visible ? 'block' : 'none';
@@ -558,7 +731,28 @@ function fit() {
       const row = Math.floor(index / columns);
       const column = index % columns;
       cell.className = (row + column) % 2 ? 'black' : 'white';
-      if ((row === 0 && column % 13 === 3) || (row === 1 && column % 13 === 9)) cell.className = 'red';
+    });
+  });
+}
+
+function alignPaletteNames() {
+  const measure = document.createElement('canvas').getContext('2d');
+  document.querySelectorAll('.palette-spec-name').forEach(name => {
+    const english = name.querySelector('strong');
+    const persian = name.querySelector('span');
+    english.style.letterSpacing = '0px';
+    measure.font = '700 18px Aileron';
+    const englishWidth = measure.measureText(english.textContent).width;
+    measure.font = '700 18px IRANYekanX';
+    const persianWidth = measure.measureText(persian.textContent).width;
+    if (persianWidth > englishWidth) english.style.letterSpacing = `${(persianWidth - englishWidth) / Math.max(1, english.textContent.length - 1)}px`;
+  });
+  document.querySelectorAll('.palette-spec-codes').forEach(codes => {
+    codes.querySelectorAll('b,small').forEach(line => {
+      line.style.letterSpacing = '0px';
+      measure.font = getComputedStyle(line).font;
+      const naturalWidth = measure.measureText(line.textContent).width;
+      line.style.letterSpacing = `${(160 - naturalWidth) / Math.max(1, line.textContent.length - 1)}px`;
     });
   });
 }
@@ -577,6 +771,11 @@ function show(index) {
     else link.removeAttribute('aria-current');
   });
   fit();
+  alignPaletteNames();
+  alignBasicDividerSubtitle();
+  if (['essentials', 'colors'].includes(slides[current].dataset.chapter) && slides[current].classList.contains('divider')) {
+    document.fonts.load('900 38px Aileron').then(alignBasicDividerSubtitle);
+  }
 }
 jumpForm.addEventListener('submit', event => {
   event.preventDefault();
@@ -610,6 +809,7 @@ pdfForm.addEventListener('submit', event => {
     else slide.setAttribute('hidden', '');
   });
   document.body.offsetHeight;
+  alignBasicDividerSubtitle();
   window.print();
 });
 window.addEventListener('afterprint', () => {
@@ -626,8 +826,7 @@ links.forEach(link => link.addEventListener('click', event => {
   const index = slides.findIndex(slide => slide.dataset.chapter === link.hash.slice(1));
   if (index >= 0) show(index);
 }));
-window.addEventListener('resize', fit);
-document.fonts.ready.then(fit);
+window.addEventListener('resize', () => { fit(); alignPaletteNames(); alignBasicDividerSubtitle(); });
+document.fonts.ready.then(() => { fit(); alignPaletteNames(); alignBasicDividerSubtitle(); });
 document.querySelectorAll('img').forEach(img => img.addEventListener('load', fit));
 show(0);
-

@@ -1,7 +1,7 @@
 {
   "name": "burger-zoghali-brandbook",
   "private": true,
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Visual brandbook for Burger Zoghali",
   "type": "module",
   "scripts": {

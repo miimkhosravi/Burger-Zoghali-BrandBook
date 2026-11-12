@@ -1,25 +1,19 @@
 [
   {
     "number": 1,
-    "file": "assets/mockups/001-cobrand-11.webp",
-    "source_atlas": "assets/atlases/cobrand.webp",
-    "grid_cell": [
-      1,
-      1
-    ],
-    "label": "ساک سفارش با تپسی",
-    "aspect_ratio": 1.5
+    "file": "assets/mockups/001-cobrand-snappfood.jpeg",
+    "source_atlas": null,
+    "grid_cell": null,
+    "label": "تابلوی همکاری برگر ذغالی و اسنپ‌فود",
+    "aspect_ratio": 1.9305
   },
   {
     "number": 2,
-    "file": "assets/mockups/002-cobrand-12.webp",
-    "source_atlas": "assets/atlases/cobrand.webp",
-    "grid_cell": [
-      1,
-      2
-    ],
-    "label": "مهر بسته‌بندی با اسنپ",
-    "aspect_ratio": 1.5
+    "file": "assets/mockups/002-cobrand-tapsifood.jpeg",
+    "source_atlas": null,
+    "grid_cell": null,
+    "label": "تابلوی همکاری برگر ذغالی و تپسی‌فود",
+    "aspect_ratio": 1.9255
   },
   {
     "number": 3,

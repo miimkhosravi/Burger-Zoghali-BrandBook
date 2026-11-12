@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>آزمون رنگ نشانه | برگر ذغالی</title>
+<style>
+  :root{color-scheme:dark;--black:#171717;--white:#F5F4F1;--red:#A3121B}
+  *{box-sizing:border-box}
+  html,body{margin:0;min-height:100%;background:var(--black);font-family:Tahoma,Arial,sans-serif}
+  .slide{direction:ltr;width:100%;max-width:4400px;aspect-ratio:4400/2283;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;overflow:hidden}
+  .preview{background:var(--selected,#A3121B);display:grid;place-items:center;transition:background-color .1s linear}
+  .mark{height:38%;width:auto;aspect-ratio:386.223/280.713;--ink:#F5F4F1;--outline:#F5F4F1}
+  .mark svg{display:block;width:100%;height:100%}
+  .mark .cls-1,.mark .cls-2{fill:var(--ink)}
+  .mark .cls-2{fill-rule:evenodd}
+  .mark .cls-3{fill:none;stroke:var(--outline);stroke-miterlimit:10;stroke-width:5px}
+  .picker{direction:ltr;background:#242426;color:#F5F4F1;padding:clamp(28px,1.8vw,80px);display:grid;place-items:center;border-left:1px solid #171717}
+  .picker-body{width:100%;max-width:1840px;display:flex;flex-direction:column;gap:clamp(24px,1.1vw,48px);min-width:0}
+  .color-area{display:grid;grid-template-columns:minmax(0,1fr) clamp(28px,1.4vw,62px);gap:clamp(16px,.75vw,33px);align-items:stretch;min-width:0}
+  .sv-wrap,.hue-wrap{position:relative;min-width:0}
+  .sv-wrap{aspect-ratio:1;border:1px solid #777}
+  .hue-wrap{height:100%;border:1px solid #777}
+  canvas{display:block;width:100%;height:100%;cursor:crosshair;touch-action:none}
+  .sv-cursor{position:absolute;width:clamp(18px,.75vw,32px);height:clamp(18px,.75vw,32px);border:2px solid #fff;border-radius:50%;
+    box-shadow:0 0 0 1px #171717,0 2px 8px #0009;pointer-events:none;transform:translate(-50%,-50%)}
+  .hue-cursor{position:absolute;left:-6px;right:-6px;height:clamp(6px,.25vw,11px);border:2px solid #fff;
+    box-shadow:0 0 0 1px #151515;pointer-events:none;transform:translateY(-50%)}
+  .models{direction:ltr;display:grid;grid-template-columns:1fr 1.1fr 1.34fr 1.1fr;gap:0;min-width:0;border-top:1px solid #505052;padding-top:clamp(22px,1vw,44px)}
+  .model-row{min-width:0;padding:0 clamp(10px,.85vw,38px);border-left:1px solid #505052}
+  .model-row:first-child{border-left:0;padding-left:0}
+  .model-row:last-child{padding-right:0}
+  .model-name{display:block;margin-bottom:clamp(11px,.55vw,24px);font:700 clamp(12px,.6vw,27px) Arial,sans-serif;letter-spacing:.08em;color:#D3D3D4;direction:ltr;text-align:left}
+  .model-values{direction:ltr;display:grid;grid-template-columns:repeat(var(--count),minmax(0,1fr));gap:clamp(4px,.26vw,11px);min-width:0}
+  .value-box{min-width:0;display:flex;align-items:center;gap:clamp(2px,.16vw,7px);background:#353537;border:1px solid #606063;
+    padding:clamp(5px,.3vw,13px);height:clamp(36px,1.95vw,86px)}
+  .value-box:focus-within{border-color:#E3E3E3}
+  .value-box span{font:700 clamp(10px,.43vw,19px) Arial,sans-serif;color:#AAAAAC;flex:none}
+  .value-box input{width:100%;min-width:0;padding:0;border:0;outline:0;background:none;color:#fff;
+    font:600 clamp(11px,.5vw,22px) Arial,sans-serif;text-align:left;direction:ltr}
+  .value-box input[type=number]{appearance:textfield;-moz-appearance:textfield}
+  .value-box input::-webkit-outer-spin-button,.value-box input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+  .value-box input.invalid{color:#FF9797}
+  @media(max-width:1150px){
+    .picker{padding:22px}.picker-body{gap:18px}
+    .color-area{width:min(100%,370px);margin:0 auto}
+    .models{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:22px}
+    .model-row:nth-child(3){border-left:0;padding-left:0}
+    .model-row:nth-child(2){padding-right:0}
+    .value-box{padding:5px}.value-box span{font-size:10px}.value-box input{font-size:11px}
+  }
+  @media(max-width:800px){
+    .slide{display:flex;flex-direction:column;aspect-ratio:auto;overflow:visible}
+    .preview{height:440px;min-height:0}.mark{height:38%;width:auto}
+    .picker{padding:24px;min-height:540px}
+  }
+  @media(max-width:580px){
+    .preview{height:360px}.picker{padding:18px;min-height:0}
+    .color-area{grid-template-columns:minmax(0,1fr) 25px;gap:12px}
+    .models{gap:18px}.model-row{padding:0 10px}.model-name{margin-bottom:8px}
+    .value-box{height:40px;padding:5px}
+  }
+</style>
+</head>
+<body>
+<main class="slide" aria-label="آزمون رنگ نشانه در صفحهٔ ۴۴۰۰ در ۲۲۸۳">
+  <section class="preview" id="preview" aria-label="لوگوی ثابت روی پس‌زمینهٔ رنگی">
+    <div class="mark" id="mark" aria-label="نماد و لوگوتایپ اصلی برگر ذغالی">
+      <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" viewBox="0 0 386.223 280.713" role="img" aria-label="نشانه و لوگوتایپ اصلی برگر ذغالی">
+  <g>
+    <g>
+      <g>
+        <path class="cls-1" d="M61.449,245.481c0-3.122-.008-6.245.002-9.367.012-3.567,1.856-5.495,5.433-5.485,4.183.012,8.374-.265,12.549.202,1.172.131,2.31.432,3.396.902,4.887,2.116,6.041,8.05,2.306,11.85-.206.209-.404.434-.639.606-.52.379-.606.632.077.963,3.095,1.502,4.458,4.068,4.264,7.427-.206,3.558-2.078,6.04-5.298,7.495-1.662.751-3.452,1.032-5.259,1.055-3.305.042-6.612.02-9.918-.004-1.295-.009-2.548-.266-3.734-.829-2.118-1.006-3.134-2.723-3.165-5.009-.044-3.269-.011-6.538-.011-9.808h-.005ZM74.426,253.524c0-.013,0-.026,0-.039.55,0,1.102.023,1.65-.009.288-.017.577-.11.856-.202,1.017-.334,1.638-1.226,1.568-2.26-.074-1.091-.658-1.74-1.725-1.997-1.162-.28-2.338-.227-3.51-.184-1.861.069-2.403.718-2.225,2.565.142,1.474.777,2.069,2.282,2.125.367.014.735.002,1.102.002ZM73.892,242.132c.738-.05,1.627.072,2.465-.303.955-.427,1.403-1.181,1.305-2.192-.099-1.028-.721-1.659-1.749-1.839-1.233-.215-2.465-.298-3.712-.052-.773.152-1.118.58-1.195,1.339-.276,2.706.026,3.049,2.887,3.047Z"/>
+        <path class="cls-1" d="M135.855,270.204c-2.336.039-4.758-.365-7.045-1.346-2.912-1.249-4.124-4.011-3.062-6.749.943-2.433,3.334-3.607,6.149-2.953.852.198,1.677.536,2.494.862,1.182.471,2.389.716,3.661.572,1.121-.127,1.825-.724,1.843-1.549.018-.862-.593-1.333-1.852-1.449-1.935-.178-3.874-.292-5.715-1.044-3.365-1.373-5.303-3.888-5.826-7.421-.817-5.516,2.478-10.38,7.863-11.709.952-.235,1.96-.301,2.946-.336,2.825-.101,5.652-.164,8.479-.206,2.092-.031,3.229.652,3.8,2.194.639,1.726.175,3.609-1.263,4.771-.454.367-.561.667-.357,1.202,1.25,3.275.584,6.199-1.708,8.785-.369.416-.433.689.017,1.077,3.398,2.932,3.208,8.916-.927,12.312-2.717,2.231-5.887,3.048-9.494,2.988ZM138.009,244.137c-2.085-.013-3.684,1.389-3.71,3.253-.025,1.816,1.533,3.261,3.545,3.286,2.167.027,3.631-1.277,3.643-3.246.012-1.957-1.386-3.281-3.479-3.293Z"/>
+        <path class="cls-1" d="M163.63,250.596c-1.43,0-2.86-.008-4.29.005-.393.004-.911-.085-1.087.338-.196.473.242.817.552,1.106,1.355,1.262,3.011,1.405,4.739,1.182.953-.123,1.837-.492,2.724-.848,1.735-.695,3.11-.343,3.982.983.814,1.237.633,2.96-.542,4.144-1.442,1.453-3.283,2.221-5.242,2.631-3.872.811-7.522.354-10.734-2.177-3.662-2.887-5.122-8.524-3.481-13.446,1.521-4.561,5.767-7.664,10.582-7.744,2.973-.049,5.671.654,7.851,2.815,1.995,1.977,2.724,4.39,2.398,7.133-.28,2.358-1.674,3.63-4.046,3.878-1.137.119-2.271.111-3.408-.002ZM160.981,245.855v.008c.694,0,1.388.016,2.081-.004,1.058-.03,1.271-.381.735-1.254-.692-1.129-1.777-1.442-3.025-1.35-1.219.09-2.153.632-2.714,1.748-.278.553-.092.841.513.85.803.012,1.606.003,2.41.003Z"/>
+        <path class="cls-1" d="M111.339,246.587c-.087,1.348.186,3.302-.141,5.234-.567,3.346-2.436,5.734-5.544,7.018-3.595,1.485-7.253,1.492-10.783-.233-3.437-1.679-5.039-4.617-5.166-8.349-.098-2.861-.081-5.729-.007-8.591.076-2.944,1.616-4.345,4.449-4.229,2.095.086,3.502,1.472,3.541,3.585.044,2.423-.014,4.848.035,7.27.043,2.12,1.097,3.139,3.039,3.06,1.334-.054,2.172-.725,2.546-2.025.164-.571.207-1.152.205-1.743-.006-2.166-.04-4.334.013-6.499.054-2.209,1.562-3.572,3.887-3.622,2.231-.048,3.72,1.27,3.911,3.464.01.11.014.22.014.33,0,1.579,0,3.158,0,5.33Z"/>
+        <path class="cls-1" d="M172.093,250.045c0-1.653-.012-3.306.002-4.958.037-4.305,2.341-7.06,6.581-7.799,1.554-.271,3.126-.41,4.707-.078,1.954.41,3.027,1.815,2.999,4.013-.028,2.164-1.168,3.58-3.13,3.888-3.025.475-3.137.61-3.137,3.709,0,2.314.05,4.63-.02,6.941-.092,3.067-2.665,4.814-5.501,3.807-1.563-.555-2.456-1.908-2.494-3.904-.035-1.873-.008-3.746-.008-5.619Z"/>
+        <path class="cls-1" d="M112.796,250.04c0-1.872-.029-3.744.006-5.614.068-3.578,2.007-6.059,5.472-6.929,1.821-.458,3.679-.651,5.56-.289,2.069.398,3.257,1.935,3.138,4.118-.128,2.351-1.351,3.632-3.589,3.76-1.895.108-2.537.753-2.557,2.689-.027,2.605.02,5.211-.016,7.816-.031,2.246-1.063,3.627-2.961,4.104-2.672.672-4.93-.958-5.027-3.71-.07-1.979-.014-3.963-.014-5.944h-.011Z"/>
+      </g>
+      <g>
+        <path class="cls-1" d="M257.095,237.844c1.249,0,2.499.025,3.748-.007,1.425-.036,2.633.305,3.26,1.73.64,1.455.337,3.65-.773,4.592-.669.568-.726,1.008-.441,1.804,1.053,2.942.415,5.614-1.536,8.001-.357.436-.715.79-.075,1.312,3.531,2.879,2.835,9.016-.805,11.992-3.803,3.11-8.181,3.384-12.769,2.501-1.477-.284-2.916-.693-4.142-1.638-2.007-1.549-2.629-4.241-1.498-6.548.982-2.004,3.225-2.968,5.65-2.348.927.237,1.816.631,2.713.979,1.064.412,2.164.504,3.263.278.808-.166,1.548-.614,1.49-1.555-.057-.919-.865-1.175-1.634-1.243-1.669-.147-3.35-.191-4.953-.762-4.498-1.601-6.894-6.041-5.885-10.91,1.044-5.038,4.673-7.932,10.215-8.11,1.39-.045,2.784-.007,4.175-.007,0-.02,0-.041,0-.061ZM253.33,245.02c-1.858-.01-3.282,1.243-3.306,2.908-.023,1.613,1.472,2.967,3.271,2.96,1.817-.006,3.343-1.311,3.384-2.892.043-1.681-1.403-2.967-3.349-2.977Z"/>
+        <path class="cls-1" d="M208.721,260.454c-2.463,0-4.926-.006-7.389.002-1.972.007-3.77-.413-4.598-2.432-.842-2.052-.5-4.04.984-5.694,2.716-3.028,5.507-5.988,8.266-8.977.653-.708,1.309-1.414,1.951-2.132.181-.202.529-.384.396-.695-.154-.36-.56-.24-.865-.242-1.856-.013-3.712-.009-5.569-.011-.321,0-.643.005-.964,0-2.628-.046-4.305-1.579-4.379-4-.083-2.713,1.411-4.502,4.138-4.55,5.424-.096,10.851-.06,16.277-.017,1.848.015,3.382.81,4.082,2.6.831,2.127.476,4.201-1.006,5.924-1.977,2.298-4.09,4.479-6.142,6.713-1.207,1.314-2.413,2.628-3.608,3.953-.177.196-.525.383-.354.702.157.292.518.166.789.168,1.999.011,3.998-.011,5.997.012,2.634.031,4.16,1.599,4.173,4.248.014,2.689-1.52,4.362-4.148,4.41-2.676.048-5.354.011-8.032.011v.008Z"/>
+        <path class="cls-1" d="M265.106,245.9c0-3.355-.011-6.71.003-10.065.013-2.942,2.166-4.606,5.01-3.898,1.523.379,2.505,1.545,2.58,3.153.05,1.069.067,2.143.012,3.211-.048.926.078,1.189,1.069.733,3.241-1.49,7.248-.745,9.604,1.728,1.543,1.62,2.306,3.629,2.372,5.823.095,3.174.064,6.353.015,9.528-.049,3.154-2.833,4.877-5.727,3.591-1.147-.51-1.723-1.443-1.885-2.664-.283-2.134-.078-4.278-.145-6.416-.015-.464.006-.929-.022-1.391-.103-1.665-.973-2.513-2.568-2.521-1.609-.008-2.65.917-2.69,2.55-.057,2.354.008,4.711-.032,7.066-.039,2.245-1.506,3.67-3.723,3.705-2.342.037-3.841-1.371-3.867-3.747-.039-3.462-.01-6.924-.01-10.386h.005Z"/>
+        <path class="cls-1" d="M242.094,249.434c-.181,4.156-2.328,7.92-6.757,10.088-5.963,2.919-12.75-.358-14.51-6.843-1.987-7.323,2.683-14.216,10.242-14.739,6.669-.461,11.006,4.373,11.026,11.494ZM234.475,248.71c.019-1.709-1.236-3.012-2.914-3.026-1.942-.016-3.603,1.586-3.603,3.478,0,1.701,1.255,2.998,2.936,3.035,1.928.042,3.56-1.546,3.581-3.486Z"/>
+        <path class="cls-1" d="M305.647,251.998c-.068,1.293.153,3.084-.113,4.857-.433,2.897-3.58,4.432-6.103,2.942-.583-.344-.977-.309-1.551-.051-2.508,1.126-5.052,1.157-7.562.005-2.518-1.156-3.895-3.511-3.758-6.31.131-2.697,1.837-5.031,4.4-5.899,1.846-.625,3.748-.841,5.699-.566.476.067,1.17.405,1.376-.319.193-.675-.327-1.116-.905-1.408-.826-.416-1.707-.545-2.602-.332-.761.181-1.513.416-2.247.689-1.861.691-3.316.296-4.084-1.149-.795-1.497-.301-3.401,1.167-4.456,1.406-1.011,3.022-1.381,4.71-1.594,2.015-.254,3.995-.135,5.932.441,3.621,1.077,5.558,3.935,5.637,8.271.027,1.463.004,2.927.004,4.879ZM296.174,255.406c1.349-.016,2.345-.92,2.335-2.119-.01-1.194-.984-2.055-2.282-2.018-1.39.04-2.353.918-2.325,2.121.028,1.229.932,2.031,2.273,2.015Z"/>
+        <path class="cls-1" d="M314.886,245.571c.001,3.458.03,6.917-.007,10.375-.033,3.028-2.165,4.799-4.971,4.213-1.586-.332-2.473-1.348-2.777-2.886-.13-.66-.188-1.344-.189-2.018-.012-6.346-.007-12.693.002-19.04,0-.568.037-1.141.112-1.704.302-2.261,1.85-3.578,4.085-3.501,2.215.076,3.657,1.516,3.728,3.865.065,2.137.016,4.278.017,6.417,0,1.426,0,2.852.001,4.279Z"/>
+        <path class="cls-1" d="M324.775,250.085c0,1.924.018,3.848-.004,5.772-.035,3.077-2.208,4.864-5.236,4.333-1.872-.328-3.163-1.818-3.197-3.982-.063-3.99-.096-7.983.016-11.971.087-3.117,2.296-4.755,5.369-4.208,1.793.319,3.003,1.811,3.04,3.856.038,2.066.008,4.133.008,6.2h.004Z"/>
+        <path class="cls-1" d="M324.77,234.731c-.003,2.391-1.833,4.225-4.189,4.198-2.273-.025-4.058-1.77-4.066-3.972-.008-2.373,1.818-4.182,4.217-4.177,2.302.005,4.041,1.707,4.039,3.951Z"/>
+      </g>
+    </g>
+    <g>
+      <g>
+        <g>
+          <path class="cls-2" d="M215.039,207.5c-1.067-.489-2.223-1.512-2.756-2.312-1.556-2.534-.889-6.313,1.334-7.736.445-.267,2.089-.711,3.601-.889,8.18-1.156,11.337-6.713,8.402-14.849-1.467-4.135-1.423-5.424.356-7.38,1.156-1.245,1.867-1.6,3.423-1.778,1.334-.133,2.445,0,3.334.489,1.245.667,1.645,1.245,3.868,6.091,1.2,2.579,11.342,3.512,15.254,3.734,4.312.267,6.935-.445,7.335-1.867.178-.667,0-1.556-.533-2.356-.934-1.512-5.201-5.024-8.18-6.757-2.267-1.334-3.379-3.023-3.379-5.113s.934-3.957,2.267-5.113c1.111-.978,8.536-4.09,18.316-7.691,6.491-2.356,7.736-2.445,9.247-.533,2.001,2.534,1.423,7.024-1.111,8.714-.756.489-3.957,1.867-7.113,3.023-3.853,1.423-4.92,2.964-3.201,4.624,1.423,1.378,3.201,3.779,4.046,5.29,1.334,2.49,1.512,3.156,1.512,6.268,0,3.068-.133,3.779-1.289,5.868-.8,1.467-2.045,2.845-3.245,3.69-4.801,3.29-22.056,4.268-29.08,2.267-.8-.222-1.067-.089-1.245.667-.133.533-.934,2.356-1.734,4.046-1.823,3.779-5.068,7.113-8.714,8.891-3.468,1.689-7.913,2.001-10.581.756l-.133-.044Z"/>
+          <path class="cls-2" d="M270.616,207.9c-3.912-1.245-5.557-6.935-2.756-9.603.578-.533,2.534-1.334,4.446-1.823s4.09-1.378,4.935-2.045c3.245-2.49,4.046-7.335,2.089-12.804-1.512-4.179-1.423-5.513.356-7.335,1.912-1.912,4.09-2.312,6.313-1.245,1.378.667,2.001,1.467,3.423,4.312,2.178,4.357,3.334,5.113,7.602,5.113s16.015-.8,16.504-2.089c.445-1.2.267-3.823-.4-5.691-1.023-2.801-.845-4.712.578-6.002,1.734-1.6,2.89-2.089,4.89-2.089s4.624,1.956,5.513,4.935c.934,3.112.889,10.092-.089,13.07-1.067,3.245-4.268,6.491-7.78,7.869-2.134.8-14.103,1.023-18.06,1.023-2.667,0-5.513-.133-6.357-.311-1.037-.237-1.808.43-2.312,2.001-.978,3.068-3.645,7.202-5.824,9.025-2.756,2.267-5.824,3.557-8.98,3.779-1.556.089-3.379,0-4.09-.222v.133Z"/>
+          <path class="cls-2" d="M303.63,206.388c-1.423-1.289-1.645-1.734-1.645-3.468,0-2.49,1.245-4.223,3.557-5.068,2.134-.756,3.645-.4,5.513,1.245,1.245,1.111,1.423,1.556,1.423,3.512s-.133,2.401-1.645,3.779c-1.378,1.245-1.956,1.512-3.645,1.512s-2.267-.267-3.645-1.512h.089Z"/>
+          <path class="cls-2" d="M248.965,158.686c-.311-.311-.533-1.289-.533-2.223s.311-1.956,1.067-2.667c1.156-1.067,15.16-7.38,18.183-8.18,1.6-.445,2.089-.4,2.934.178,1.378.934,1.778,2.579.934,3.912-.4.578-1.645,1.378-2.801,1.823-1.6.578-16.227,6.402-18.761,7.469-.267.089-.711-.044-.978-.356l-.044.044Z"/>
+        </g>
+        <g>
+          <path class="cls-2" d="M78.546,210.349c-6.363-.587-11.012-2.888-14.126-6.95-2.076-2.708-2.979-5.686-2.979-9.658s.948-7.582,2.934-11.508c1.986-3.972,4.287-6.499,6.183-6.86,1.895-.361,4.468.496,5.325,1.715.993,1.444.812,3.159-.677,6.093-2.572,5.1-2.753,9.026-.542,11.689,1.625,1.941,4.513,3.069,8.485,3.34,5.19.361,11.644-1.444,11.644-3.249s-1.038-.903-2.572-1.309c-6.86-1.895-7.943-2.798-7.582-6.544.226-2.572,1.354-4.242,3.475-5.371,1.715-.903,2.302-.857,10.651.587,8.53,1.489,12.682.857,13.855-2.166.271-.767.406-5.235.316-11.915-.09-7.131.271-11.238,1.083-12.321,2.437-3.204,6.905-3.114,9.162.135.692,1.023.978,5.611.857,13.765-.181,11.012-.316,12.546-1.173,15.299-1.173,3.656-3.565,6.499-6.905,8.169-1.76.903-3.114,1.173-6.363,1.354-2.738.15-4.272,1.008-4.603,2.572-1.309,6.363-9.116,12.095-17.646,12.907-5.145.496-5.777.496-8.846.226h.045Z"/>
+          <path class="cls-2" d="M183.927,194.779c-5.777-1.219-8.62-4.919-7.311-9.342.542-1.85,2.753-4.017,4.062-4.017s1.67.406,2.753.903c2.572,1.173,6.995,1.219,8.394.09,1.941-1.58.406-4.107-4.739-7.898-3.61-2.663-4.242-3.926-3.159-6.499.361-.812,1.309-2.076,2.121-2.753,1.264-1.083,1.76-1.219,3.43-1.038,2.257.271,6.002,2.572,8.755,5.416,1.038,1.038,2.527,3.204,3.385,4.739,1.309,2.437,1.534,3.34,1.715,6.634.135,3.204,0,4.152-.812,6.138-1.219,2.888-4.513,5.957-7.447,6.95-2.527.857-8.53,1.264-11.102.677h-.045Z"/>
+          <path class="cls-2" d="M138.615,194.463c-2.618-.587-4.062-1.309-5.641-2.708-4.017-3.61-4.694-7.311-4.062-22.791.451-11.824.722-12.953,3.159-14.577,1.489-.993,4.468-.948,6.002.045,1.986,1.309,2.302,2.798,1.986,9.297-.948,18.639-1.038,16.563.496,18.052,1.264,1.264,1.625,1.354,4.242,1.354s2.843,0,1.986-2.572c-1.083-3.204-.857-6.409.767-9.703,1.264-2.618,3.475-4.558,6.77-6.093,1.67-.767,2.934-.993,5.732-.948,2.753,0,4.017.271,5.686,1.038,1.173.542,2.618,1.625,3.204,2.347,1.941,2.347,1.173,6.363-1.489,7.447-1.083.451-1.76.406-4.152-.406-2.437-.812-3.069-.903-4.558-.451-1.309.406-1.85.857-2.347,2.031-.812,1.941-.271,3.475,1.67,4.648,1.895,1.173,5.19,1.173,9.026,0,1.625-.496,3.43-.812,4.017-.677,1.309.316,2.347,1.986,2.708,4.107.361,2.392-1.219,5.371-3.565,6.679-2.437,1.354-7.763,2.708-13.494,3.475-4.423.587-16.067.812-18.143.361v.045Z"/>
+          <path class="cls-2" d="M156.352,161.427c-1.534-.632-2.843-2.663-2.843-4.378s1.444-3.972,3.475-4.603c2.347-.677,4.694.316,5.686,2.437.632,1.309.677,1.85.226,3.385-.316.993-.993,2.121-1.58,2.482-1.309.857-3.746,1.219-4.964.677Z"/>
+          <path class="cls-2" d="M185.913,161.156c-1.354-.767-2.572-2.753-2.572-4.242,0-2.437,2.888-5.325,5.325-5.325s3.972,1.625,4.739,3.385c.496,1.219.542,1.895.181,3.024-.271.812-.948,1.895-1.534,2.482-1.354,1.309-4.423,1.625-6.138.677h0Z"/>
+        </g>
+      </g>
+      <g>
+        <path class="cls-1" d="M149.449,55.682c2.31-10.831,8.53-18.855,17.673-24.772,18.215-11.79,43.889-9.242,59.385,5.927,5.212,5.102,8.697,11.246,10.113,18.439.286,1.452.275,3.139-.191,4.517-.625,1.851-2.349,2.333-4.304,2.325-12.97-.05-25.941-.026-38.912-.023-11.226.002-22.453-.099-33.677.012-1.603.016-3.207.036-4.81.062-4.571.073-6.05-2.862-5.277-6.486Z"/>
+        <path class="cls-1" d="M148.944,74.794c.189-3.443,2.318-5.369,5.768-5.371,10.08-.006,20.165.182,30.24-.063,6.83-.166,12.916,1.623,18.579,5.284,2.247,1.452,4.565,2.796,6.876,4.147,2.418,1.414,4.037,1.261,6.121-.662,2.071-1.911,4.126-3.848,6.074-5.884,3.074-3.213,6.914-3.196,10.815-2.588,2.044.318,3.636,2.786,3.74,5.358.096,2.394.121,4.799.006,7.191-.164,3.426-2.472,5.554-5.87,5.556-12.759.008-25.518.003-38.278.005-12.618.002-25.236.005-37.855,0-4.088-.002-6.155-1.952-6.262-5.994-.061-2.325-.082-4.658.045-6.979Z"/>
+        <path class="cls-3" d="M251.753,69.484c-.047-17.842-6.811-32.771-20.219-44.557-22.492-19.769-56.884-19.164-78.608,1.511-12.176,11.589-18.438,25.946-18.468,42.833-.057,31.022-.02,16.25-.017,47.272,0,6.494,3.251,9.751,9.731,9.754,16.281.006,32.561.002,48.842,0,16.492,0,32.984.009,49.476-.006,5.927-.005,9.289-3.397,9.29-9.325.003-31.093.058-16.391-.025-47.484Z"/>
+        <path class="cls-1" d="M149.202,97.768c.815-1.997,2.36-2.721,4.531-2.711,13.106.06,26.212.03,39.318.03v-.007c13.036,0,26.071,0,39.107,0,3.671,0,5.149,1.425,5.185,5.068.016,1.62.099,3.264-.133,4.855-.406,2.779-2.187,4.654-4.531,6.04-4.606,2.722-9.755,3.718-14.938,4.234-16.869,1.68-33.757,1.765-50.614-.196-4.622-.538-9.187-1.515-13.307-3.877-4.546-2.606-6.607-8.563-4.618-13.436Z"/>
+      </g>
+    </g>
+  </g>
+</svg>
+    </div>
+  </section>
+  <section class="picker" aria-label="انتخابگر کامل رنگ">
+    <div class="picker-body">
+      <div class="color-area">
+        <div class="sv-wrap" id="svWrap"><canvas id="sv" aria-label="اشباع و روشنایی"></canvas><span class="sv-cursor" id="svCursor" aria-hidden="true"></span></div>
+        <div class="hue-wrap"><canvas id="hue" aria-label="طیف رنگ"></canvas><span class="hue-cursor" id="hueCursor" aria-hidden="true"></span></div>
+      </div>
+      <div class="models">
+        <div class="model-row"><span class="model-name">HEX</span>
+          <div class="model-values" style="--count:1"><label class="value-box"><span>#</span><input id="hex" type="text" maxlength="6" spellcheck="false" autocomplete="off" aria-label="HEX بدون علامت"></label></div>
+        </div>
+        <div class="model-row"><span class="model-name">RGB</span>
+          <div class="model-values" style="--count:3">
+            <label class="value-box"><span>R</span><input id="r" type="number" min="0" max="255" inputmode="numeric" aria-label="Red"></label>
+            <label class="value-box"><span>G</span><input id="g" type="number" min="0" max="255" inputmode="numeric" aria-label="Green"></label>
+            <label class="value-box"><span>B</span><input id="b" type="number" min="0" max="255" inputmode="numeric" aria-label="Blue"></label>
+          </div>
+        </div>
+        <div class="model-row"><span class="model-name">CMYK</span>
+          <div class="model-values" style="--count:4">
+            <label class="value-box"><span>C</span><input id="c" type="number" min="0" max="100" inputmode="numeric" aria-label="Cyan percent"></label>
+            <label class="value-box"><span>M</span><input id="m" type="number" min="0" max="100" inputmode="numeric" aria-label="Magenta percent"></label>
+            <label class="value-box"><span>Y</span><input id="y" type="number" min="0" max="100" inputmode="numeric" aria-label="Yellow percent"></label>
+            <label class="value-box"><span>K</span><input id="k" type="number" min="0" max="100" inputmode="numeric" aria-label="Black percent"></label>
+          </div>
+        </div>
+        <div class="model-row"><span class="model-name">HSB</span>
+          <div class="model-values" style="--count:3">
+            <label class="value-box"><span>H</span><input id="h" type="number" min="0" max="360" inputmode="numeric" aria-label="Hue degrees"></label>
+            <label class="value-box"><span>S</span><input id="s" type="number" min="0" max="100" inputmode="numeric" aria-label="Saturation percent"></label>
+            <label class="value-box"><span>B</span><input id="v" type="number" min="0" max="100" inputmode="numeric" aria-label="Brightness percent"></label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<script>
+(() => {
+  const $=id=>document.getElementById(id);
+  const preview=$('preview'),mark=$('mark'),sv=$('sv'),hue=$('hue');
+  const hInput=$('h'),sInput=$('s'),vInput=$('v'),rInput=$('r'),gInput=$('g'),bInput=$('b');
+  const cInput=$('c'),mInput=$('m'),yInput=$('y'),kInput=$('k'),hexInput=$('hex');
+  const BLACK='#171717',WHITE='#F5F4F1',RED='#A3121B';
+  const state={h:0,s:0,v:0};
+  const clamp=(n,min,max)=>Math.max(min,Math.min(max,Number(n)||0));
+  const toHex=a=>'#'+a.map(n=>Math.round(n).toString(16).padStart(2,'0')).join('').toUpperCase();
+  function hexToRgb(value){
+    const match=/^#?([\da-f]{3}|[\da-f]{6})$/i.exec(value.trim());
+    if(!match)return null;
+    const h=match[1].length===3?[...match[1]].map(c=>c+c).join(''):match[1];
+    return [0,2,4].map(i=>parseInt(h.slice(i,i+2),16));
+  }
+  function hsvToRgb(h,s,v){
+    h=((h%360)+360)%360;s/=100;v/=100;
+    const c=v*s,x=c*(1-Math.abs((h/60)%2-1)),m=v-c;
+    const a=h<60?[c,x,0]:h<120?[x,c,0]:h<180?[0,c,x]:h<240?[0,x,c]:h<300?[x,0,c]:[c,0,x];
+    return a.map(z=>Math.round((z+m)*255));
+  }
+  function rgbToHsv([r,g,b]){
+    r/=255;g/=255;b/=255;const max=Math.max(r,g,b),min=Math.min(r,g,b),d=max-min;
+    let h=0;if(d)h=max===r?60*(((g-b)/d)%6):max===g?60*((b-r)/d+2):60*((r-g)/d+4);
+    return {h:(h+360)%360,s:max?d/max*100:0,v:max*100};
+  }
+  function rgbToCmyk([r,g,b]){
+    r/=255;g/=255;b/=255;const k=1-Math.max(r,g,b);
+    if(k>=1)return [0,0,0,100];
+    return [(1-r-k)/(1-k),(1-g-k)/(1-k),(1-b-k)/(1-k),k].map(n=>Math.round(n*100));
+  }
+  function cmykToRgb([c,m,y,k]){
+    return [c,m,y].map(n=>Math.round(255*(1-n/100)*(1-k/100)));
+  }
+  function lum(rgb){
+    const q=rgb.map(n=>{n/=255;return n<=.04045?n/12.92:((n+.055)/1.055)**2.4});
+    return .2126*q[0]+.7152*q[1]+.0722*q[2];
+  }
+  function contrast(a,b){const x=lum(a),y=lum(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05)}
+  function choose(color){
+    const two=[{name:'سفید با کادر قرمز',ink:WHITE,ring:RED},{name:'مشکی با کادر قرمز',ink:BLACK,ring:RED}];
+    const acceptable=two.filter(v=>contrast(hexToRgb(v.ink),color)>=4&&contrast(hexToRgb(v.ring),color)>=3);
+    if(acceptable.length)return acceptable.sort((a,b)=>contrast(hexToRgb(b.ink),color)-contrast(hexToRgb(a.ink),color))[0];
+    return [WHITE,BLACK].map(ink=>({name:ink===WHITE?'سفید تک‌رنگ':'مشکی تک‌رنگ',ink,ring:ink}))
+      .sort((a,b)=>contrast(hexToRgb(b.ink),color)-contrast(hexToRgb(a.ink),color))[0];
+  }
+  function render(){
+    const color=hsvToRgb(state.h,state.s,state.v),hex=toHex(color),variant=choose(color);
+    preview.style.setProperty('--selected',hex);
+    mark.style.setProperty('--ink',variant.ink);mark.style.setProperty('--outline',variant.ring);
+    hexInput.value=hex.slice(1);hexInput.classList.remove('invalid');
+    hInput.value=Math.round(state.h);sInput.value=Math.round(state.s);vInput.value=Math.round(state.v);
+    [rInput,gInput,bInput].forEach((el,i)=>el.value=color[i]);
+    const cmyk=rgbToCmyk(color);[cInput,mInput,yInput,kInput].forEach((el,i)=>el.value=cmyk[i]);
+    $('svCursor').style.left=state.s+'%';$('svCursor').style.top=(100-state.v)+'%';
+    $('hueCursor').style.top=(100-state.h/360*100)+'%';
+  }
+  function paint(){
+    const dpr=Math.min(2,window.devicePixelRatio||1);
+    for(const canvas of [sv,hue]){
+      const box=canvas.getBoundingClientRect();
+      canvas.width=Math.max(1,Math.round(box.width*dpr));canvas.height=Math.max(1,Math.round(box.height*dpr));
+    }
+    let ctx=sv.getContext('2d'),w=sv.width/dpr,h=sv.height/dpr;ctx.setTransform(dpr,0,0,dpr,0,0);
+    ctx.fillStyle='hsl('+state.h+' 100% 50%)';ctx.fillRect(0,0,w,h);
+    let white=ctx.createLinearGradient(0,0,w,0);white.addColorStop(0,'#fff');white.addColorStop(1,'#fff0');
+    ctx.fillStyle=white;ctx.fillRect(0,0,w,h);
+    let black=ctx.createLinearGradient(0,0,0,h);black.addColorStop(0,'#0000');black.addColorStop(1,'#000');
+    ctx.fillStyle=black;ctx.fillRect(0,0,w,h);
+    ctx=hue.getContext('2d');w=hue.width/dpr;h=hue.height/dpr;ctx.setTransform(dpr,0,0,dpr,0,0);
+    let rainbow=ctx.createLinearGradient(0,0,0,h);
+    for(let i=0;i<=6;i++)rainbow.addColorStop(i/6,'hsl('+(360-i*60)+' 100% 50%)');
+    ctx.fillStyle=rainbow;ctx.fillRect(0,0,w,h);
+    render();
+  }
+  function moveSquare(e){
+    const box=sv.getBoundingClientRect();
+    state.s=clamp((e.clientX-box.left)/box.width*100,0,100);
+    state.v=clamp((1-(e.clientY-box.top)/box.height)*100,0,100);render();
+  }
+  function moveHue(e){
+    const box=hue.getBoundingClientRect();
+    state.h=clamp((1-(e.clientY-box.top)/box.height)*360,0,360);paint();
+  }
+  sv.addEventListener('pointermove',e=>{if(e.buttons)moveSquare(e)});
+  sv.addEventListener('pointerdown',e=>{sv.setPointerCapture(e.pointerId);moveSquare(e)});
+  hue.addEventListener('pointermove',e=>{if(e.buttons)moveHue(e)});
+  hue.addEventListener('pointerdown',e=>{hue.setPointerCapture(e.pointerId);moveHue(e)});
+  for(const input of [hInput,sInput,vInput])input.addEventListener('change',()=>{
+    state.h=clamp(hInput.value,0,360);state.s=clamp(sInput.value,0,100);state.v=clamp(vInput.value,0,100);paint();
+  });
+  for(const input of [rInput,gInput,bInput])input.addEventListener('change',()=>{
+    Object.assign(state,rgbToHsv([rInput,gInput,bInput].map(el=>clamp(el.value,0,255))));paint();
+  });
+  for(const input of [cInput,mInput,yInput,kInput])input.addEventListener('change',()=>{
+    const values=[cInput,mInput,yInput,kInput].map(el=>clamp(el.value,0,100));
+    Object.assign(state,rgbToHsv(cmykToRgb(values)));paint();
+  });
+  function updateHex(){
+    const color=hexToRgb(hexInput.value);
+    if(!color){hexInput.classList.add('invalid');return}
+    Object.assign(state,rgbToHsv(color));paint();
+  }
+  hexInput.addEventListener('input',updateHex);
+  hexInput.addEventListener('change',updateHex);
+  hexInput.addEventListener('blur',()=>{if(hexInput.classList.contains('invalid'))render()});
+  if('ResizeObserver' in window)new ResizeObserver(paint).observe($('svWrap'));
+  else window.addEventListener('resize',paint);
+  Object.assign(state,rgbToHsv(hexToRgb(RED)));paint();
+})();
+</script>
+</body>
+</html>
