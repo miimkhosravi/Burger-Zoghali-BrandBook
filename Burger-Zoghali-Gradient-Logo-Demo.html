@@ -192,9 +192,11 @@
   }
   function contrast(a,b){const x=lum(a),y=lum(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05)}
   function choose(color){
-    const two=[{name:'سفید با کادر قرمز',ink:WHITE,ring:RED},{name:'مشکی با کادر قرمز',ink:BLACK,ring:RED}];
-    const acceptable=two.filter(v=>contrast(hexToRgb(v.ink),color)>=4&&contrast(hexToRgb(v.ring),color)>=3);
-    if(acceptable.length)return acceptable.sort((a,b)=>contrast(hexToRgb(b.ink),color)-contrast(hexToRgb(a.ink),color))[0];
+    const {h,s,v}=rgbToHsv(color);
+    if(v<=25&&s<=25)return {name:'سفید با کادر قرمز',ink:WHITE,ring:RED};
+    if(v>=85&&s<=15)return {name:'مشکی با کادر قرمز',ink:BLACK,ring:RED};
+    if((h<=15||h>=345)&&s>=55&&v>=40&&v<=85)
+      return {name:'سفید با کادر مشکی',ink:WHITE,ring:BLACK};
     return [WHITE,BLACK].map(ink=>({name:ink===WHITE?'سفید تک‌رنگ':'مشکی تک‌رنگ',ink,ring:ink}))
       .sort((a,b)=>contrast(hexToRgb(b.ink),color)-contrast(hexToRgb(a.ink),color))[0];
   }

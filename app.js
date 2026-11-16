@@ -1,5 +1,8 @@
 const content = document.querySelector('.content');
 const chapters = [...document.querySelectorAll('.chapter')];
+const packagingChapter = chapters.find(chapter => chapter.id === 'packaging');
+chapters.splice(chapters.indexOf(packagingChapter), 1);
+chapters.splice(chapters.findIndex(chapter => chapter.id === 'uniform'), 0, packagingChapter);
 const hero = document.querySelector('.hero');
 const closing = document.querySelector('.closing');
 document.querySelector('.topbar').remove();
@@ -185,6 +188,20 @@ for (const chapter of chapters) {
     heading.querySelector('.slug').setAttribute('lang', 'en');
     heading.querySelector('.chapter-sub')?.remove();
   }
+  if (chapter.id === 'pattern') {
+    title = 'عناصر دیزاین';
+    heading.querySelector('h2').textContent = title;
+    heading.querySelector('.slug').textContent = 'Design Elements';
+    heading.querySelector('.slug').setAttribute('lang', 'en');
+    heading.querySelector('.chapter-sub')?.remove();
+  }
+  if (chapter.id === 'packaging') {
+    title = 'بسته‌بندی';
+    heading.querySelector('h2').textContent = title;
+    heading.querySelector('.slug').textContent = 'Packaging';
+    heading.querySelector('.slug').setAttribute('lang', 'en');
+    heading.querySelector('.chapter-sub')?.remove();
+  }
   const dividerBar = sectionBar(chapterNumber, title);
   dividerBar.classList.add('divider-page-bar');
   const dividerSlide = addSlide([dividerBar, heading], chapter.id, 'divider');
@@ -289,6 +306,7 @@ for (const chapter of chapters) {
     if (child.matches('.board')) {
       const cards = [...child.children];
       for (let index = 0; index < cards.length; index++) {
+        if (chapter.id === 'pattern' && index >= 2) continue;
         const card = cards[index];
         const title = card.querySelector('h3')?.textContent.trim();
         if (chapter.id === 'essentials' && (title === 'ساختار نشانه‌نوشتهٔ فارسی' || title === 'ساختار نشانه‌نوشتهٔ انگلیسی')) {
@@ -413,6 +431,51 @@ for (const chapter of chapters) {
     });
     dividerSlide.firstElementChild.append(list);
   }
+  if (chapter.id === 'pattern') {
+    const topics = ['ساختار پترن', 'پترن با رنگ‌های اصلی و ثانویه', 'آیکن‌ها'];
+    const detailSlides = slides.filter(slide => slide.dataset.chapter === 'pattern' && slide !== dividerSlide);
+    detailSlides[1].querySelector('h3').textContent = 'ساختار پترن';
+    detailSlides[1].querySelector('.slide-page-bar').replaceWith(sectionBar('', 'المان‌های پایه', 'ساختار پترن'));
+    detailSlides[0].querySelector('.slide-page-bar').replaceWith(sectionBar('', 'المان‌های پایه', 'پترن با رنگ‌های اصلی و ثانویه'));
+    const iconHeading = document.createElement('h2');
+    iconHeading.className = 'color-topic-heading';
+    iconHeading.textContent = 'آیکن‌ها';
+    const iconSlide = addSlide([sectionBar('', 'المان‌های پایه', 'آیکن‌ها'), iconHeading], chapter.id);
+    const targets = [detailSlides[1], detailSlides[0], iconSlide];
+    const orderedSlides = [...targets, ...detailSlides.slice(2)];
+    slides.splice(slides.indexOf(dividerSlide) + 1, orderedSlides.length, ...orderedSlides);
+    orderedSlides.forEach(slide => deck.append(slide));
+    const list = document.createElement('ul');
+    list.className = 'divider-topic-list design-topic-list';
+    topics.forEach((topic, index) => {
+      const item = document.createElement('li');
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.textContent = topic;
+      button.addEventListener('click', () => show(slides.indexOf(targets[index])));
+      item.append(button);
+      list.append(item);
+    });
+    dividerSlide.firstElementChild.append(list);
+  }
+  if (chapter.id === 'packaging') {
+    const topics = [
+      'جعبه برگر', 'جعبه پیتزا', 'جعبه پیش‌غذا', 'ساک دستی', 'پاکت کرافت',
+      'ظرف سس', 'ظرف سالاد', 'ظرف سوخاری', 'کاغذ رپ برگر', 'پاکت برگر',
+      'کاغذ زیر پیتزا', 'کاغذ زیر سینی', 'لیوان'
+    ];
+    const list = document.createElement('ul');
+    list.className = 'divider-topic-list packaging-topic-list';
+    topics.forEach(topic => {
+      const item = document.createElement('li');
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.textContent = topic;
+      item.append(button);
+      list.append(item);
+    });
+    dividerSlide.firstElementChild.append(list);
+  }
   if (chapter.id === 'colors') {
     const topics = [
       'رنگ‌های اصلی و ثانویه',
@@ -507,7 +570,7 @@ for (const chapter of chapters) {
     dividerSlide.firstElementChild.append(list);
   }
   if (chapter.id === 'type') {
-    const topics = ['تایپ‌فیس فارسی اصلی','تایپ‌فیس انگلیسی اصلی','عنوان، زیرعنوان و متن بدنه'];
+    const topics = ['تایپ‌فیس فارسی اصلی','تایپ‌فیس انگلیسی اصلی','عنوان، زیرعنوان و متن بدنه','عنوان، زیرعنوان و متن بدنهٔ انگلیسی'];
     const oldSlides = slides.filter(slide => slide.dataset.chapter === 'type' && slide !== dividerSlide);
     oldSlides.forEach(slide => { slide.remove(); slides.splice(slides.indexOf(slide), 1); });
     const list = document.createElement('ul');
@@ -581,7 +644,12 @@ for (const chapter of chapters) {
     hierarchy.innerHTML = '<div class="type-hierarchy-head"><h1>مقدمه</h1><small>عنوان · Heavy / 900</small></div><div class="type-hierarchy-subtitle"><h2>مثل همیشه، خوشمزه</h2><small>زیرعنوان · Bold / 700</small></div><div class="type-hierarchy-body-label">متن بدنه · Regular / 400</div><div class="type-hierarchy-copy"></div>';
     const hierarchyCopy = hierarchy.querySelector('.type-hierarchy-copy');
     intro.querySelectorAll('p:not(.intro-lead)').forEach(paragraph => hierarchyCopy.append(paragraph.cloneNode(true)));
-    const bodies = [makeSpecimen(specimens[0]), makeSpecimen(specimens[1]), hierarchy];
+    const englishHierarchy = document.createElement('div');
+    englishHierarchy.className = 'type-hierarchy type-hierarchy-en';
+    englishHierarchy.lang = 'en';
+    englishHierarchy.dir = 'ltr';
+    englishHierarchy.innerHTML = `<div class="type-hierarchy-head"><h1>Introduction</h1><small>Heading · Heavy / 900</small></div><div class="type-hierarchy-subtitle"><h2>As Always, Delicious</h2><small>Subheading · Bold / 700</small></div><div class="type-hierarchy-body-label">Body copy · Regular / 400</div><div class="type-hierarchy-copy"><p>This document brings together Burger Zoghali’s visual identity, from its foundational elements—symbol, logotypes, color and typography—to applications in packaging, staff uniforms and restaurant spaces, and extended uses across delivery vehicles, digital experiences and other brand touchpoints. Built on a legacy that has remained “as always, delicious” since 1969, it sets clear, practical standards for a consistent and recognizable presence.</p><p>These standards form the first version of the brand identity system and will be finalized after further evaluation. As the anchor of a growing ecosystem, Burger Zoghali retains its core identity and its role as the primary reference point. This framework provides a shared visual language and a foundation for coherence across complementary brands.</p><p>A checkerboard pattern expresses this idea as a visual code for the ecosystem. Equal squares and their ordered relationships represent distinct but complementary roles within one system. Like a piece on a chessboard, each brand has its own purpose, territory and movement; its full value emerges when it works in harmony with the others. The pattern conveys functional independence, an organized network and strategic collaboration, creating a coherent team with room to grow.</p></div>`;
+    const bodies = [makeSpecimen(specimens[0]), makeSpecimen(specimens[1]), hierarchy, englishHierarchy];
     topics.forEach((topic, index) => {
       const target = addSlide([sectionBar('', 'المان‌های پایه', topic), bodies[index]], chapter.id);
       const item = document.createElement('li');
@@ -636,6 +704,203 @@ if (horizontalSlide?.querySelector('.bilingual-composition-card')) {
     horizontalTopic.closest('li').after(verticalTopic);
   }
 }
+const packagingDivider = slides.find(slide => slide.dataset.chapter === 'packaging' && slide.classList.contains('divider'));
+const packagingItems = {
+  'جعبه برگر': 'جعبهٔ برگر تک‌نفره',
+  'جعبه پیتزا': 'پیتزا / سایز کوچک',
+  'جعبه پیش‌غذا': 'جعبهٔ موزارلا استیک',
+  'ساک دستی': 'ساک بیرون‌بر',
+  'ظرف سس': 'ظرف سس با درِ مشکی',
+  'ظرف سالاد': 'سالاد / ظرف مشکی',
+  'ظرف سوخاری': 'سطل کنتاکی / تک‌نفره',
+  'کاغذ رپ برگر': 'لفاف برگر',
+  'کاغذ زیر سینی': 'برگهٔ زیر سینی / کامل',
+  'لیوان': 'لیوان سرد / کوچک'
+};
+let packagingInsertIndex = slides.findIndex((slide, index) => index > slides.indexOf(packagingDivider) && slide.dataset.chapter !== 'packaging');
+for (const button of packagingDivider.querySelectorAll('.packaging-topic-list button')) {
+  const label = packagingItems[button.textContent];
+  let target = label && slides.find(slide => slide.querySelector('.slide-page-context span')?.textContent.trim() === label);
+  if (target && target.dataset.chapter !== 'packaging') {
+    const bar = sectionBar('', 'بسته‌بندی', button.textContent);
+    bar.classList.add('mock-page-bar');
+    target = addSlide([bar, target.querySelector('.mock-card').cloneNode(true)], 'packaging');
+    slides.pop();
+    slides.splice(packagingInsertIndex, 0, target);
+    deck.insertBefore(target, slides[packagingInsertIndex + 1]);
+    packagingInsertIndex++;
+  }
+  if (!target) {
+    const heading = document.createElement('h2');
+    heading.className = 'color-topic-heading';
+    heading.textContent = button.textContent;
+    target = addSlide([sectionBar('', 'المان‌های کاربردی', button.textContent), heading], 'packaging');
+    slides.pop();
+    slides.splice(packagingInsertIndex, 0, target);
+    deck.insertBefore(target, slides[packagingInsertIndex + 1]);
+    packagingInsertIndex++;
+  }
+  button.addEventListener('click', () => show(slides.indexOf(target)));
+}
+// Replace every slide after the packaging index (slide 28) with the approved WebP sequence.
+const packagingMockups = [
+  [1, 'جعبه برگر با درِ سرهم'],
+  [2, 'جعبه برگر با درِ جدا'],
+  [3, 'جعبه پیتزا هشت‌ضلعی'],
+  [4, 'جعبه پیتزا مربعی با درِ یکپارچه'],
+  [5, 'جعبه پیتزا مربعی با درِ جدا'],
+  [6, 'جعبه پیتزا کشویی'],
+  [7, 'جعبه پیتزای اسلایسی'],
+  [8, 'سطل سوخاری مشکی با نوار شطرنجی'],
+  [9, 'سطل سوخاری چهاروجهی'],
+  [10, 'سطل سوخاری سفید با نوار شطرنجی'],
+  [11, 'جعبه پیاز سوخاری دردار'],
+  [12, 'پاکت سیب‌زمینی سرخ‌کرده'],
+  [13, 'جعبه سیب‌زمینی با درِ فرفره‌ای'],
+  [14, 'ظرف سالاد ۰۱'],
+  [15, 'ظرف سالاد ۰۲'],
+  [16, 'ظرف سالاد ۰۳'],
+  [17, 'ظرف سالاد ۰۴'],
+  [18, 'لیوان مشکی'],
+  [19, 'لیوان مشکی با نوار شطرنجی'],
+  [20, 'لیوان سفید با نوار شطرنجی'],
+  [21, 'ساک دستی افقی'],
+  [22, 'مجموعهٔ پنج ظرف سس'],
+  [23, 'لفاف چهار نوع برگر'],
+  [24, 'کاغذ زیر سینی شطرنجی'],
+  [25, 'کاغذ زیر سینی با مرکز سفید'],
+  [26, 'کاغذ زیر سینی با پترن لوزی']
+];
+function replacePackagingSlides() {
+  const packagingIndex = slides.indexOf(packagingDivider);
+  if (packagingIndex !== 24) throw new Error(`Packaging index is slide ${packagingIndex + 1}, expected 25`);
+  slides.splice(packagingIndex + 1).forEach(slide => slide.remove());
+  const packagingList = packagingDivider.querySelector('.packaging-topic-list');
+packagingList.replaceChildren();
+for (const [number, title] of packagingMockups) {
+  const card = document.createElement('article');
+  card.className = 'mock-card';
+  const photo = document.createElement('img');
+  photo.className = 'mock-photo';
+  photo.src = `./assets/mockups/packaging-${String(number).padStart(2, '0')}.webp`;
+  photo.alt = title;
+  photo.loading = 'lazy';
+  card.append(photo);
+  const bar = sectionBar('', 'بسته‌بندی', title);
+  bar.classList.add('mock-page-bar');
+  const slide = addSlide([bar, card], 'packaging');
+  const item = document.createElement('li');
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.textContent = title;
+  button.addEventListener('click', () => show(slides.indexOf(slide)));
+  item.append(button);
+  packagingList.append(item);
+}
+}
+const uniformMockups = [
+  [1, 'سرآشپز گریل / مرد'],
+  [2, 'سرآشپز گریل / زن'],
+  [3, 'گارسون / مرد'],
+  [4, 'گارسون / زن'],
+  [5, 'خدمات سالن / مرد'],
+  [6, 'خدمات سالن / زن'],
+  [7, 'آماده‌سازی / مرد'],
+  [8, 'آماده‌سازی / زن'],
+  [9, 'مدیر سالن / مرد'],
+  [10, 'مدیر سالن / زن'],
+  [11, 'پیک موتوری'],
+  [12, 'آشپز پیتزا'],
+  [13, 'صندوقدار / زن'],
+  [14, 'صندوقدار / مرد'],
+  [22, 'نشان سینهٔ مدیریت'],
+  ['11-2', 'پیک موتوری / نسخهٔ شطرنجی'],
+  [21, 'هماهنگ‌کنندهٔ پیک'],
+  [20, 'میزبان سالن / مرد'],
+  [19, 'میزبان سالن / زن'],
+  [18, 'مسئول تأمین و تدارکات'],
+  [17, 'مسئول بسته‌بندی'],
+  [16, 'باریستا'],
+  [15, 'خدمات و نظافت']
+];
+function appendUniformSlides() {
+  const heading = packagingDivider.querySelector('.chapter-top').cloneNode(true);
+  heading.querySelector('.no').textContent = '06';
+  heading.querySelector('h2').textContent = 'البسه پرسنل';
+  heading.querySelector('.slug').textContent = 'Staff Uniforms';
+  heading.querySelector('.slug').setAttribute('lang', 'en');
+  const dividerBar = sectionBar('06', 'البسه پرسنل');
+  dividerBar.classList.add('divider-page-bar');
+  const divider = addSlide([dividerBar, heading], 'uniform', 'divider');
+  divider.firstElementChild.append(checkerRail());
+  const list = document.createElement('ul');
+  list.className = 'divider-topic-list uniform-topic-list';
+  divider.firstElementChild.append(list);
+  for (const [number, title] of uniformMockups) {
+    const card = document.createElement('article');
+    card.className = 'mock-card';
+    const photo = document.createElement('img');
+    photo.className = 'mock-photo';
+    photo.src = `./assets/mockups/uniform-${String(number).padStart(2, '0')}.webp`;
+    photo.alt = title;
+    photo.loading = 'lazy';
+    card.append(photo);
+    const bar = sectionBar('', 'البسه پرسنل', title);
+    bar.classList.add('mock-page-bar');
+    const slide = addSlide([bar, card], 'uniform');
+    const item = document.createElement('li');
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.textContent = title;
+    button.addEventListener('click', () => show(slides.indexOf(slide)));
+    item.append(button);
+    list.append(item);
+  }
+}
+const architectureMockups = [
+  ['نمای بیرونی شعبهٔ شهری', 'architecture-01.webp'],
+  ['سردر شعبه در فوت‌کورت', 'architecture-02.webp'],
+  ['پیشخوان و تابلوی منوی سفارش', 'architecture-03.webp'],
+  ['چیدمان سالن نشستن', 'architecture-04.webp'],
+  ['جزئیات میز و صندلی', 'architecture-05.webp'],
+  ['آشپزخانهٔ سفید', 'architecture-06.webp'],
+  ['دفتر اداری شعبه', 'architecture-07.webp'],
+  ['علائم راهنمای داخلی', 'architecture-08.webp']
+];
+function appendArchitectureSlides() {
+  const heading = packagingDivider.querySelector('.chapter-top').cloneNode(true);
+  heading.querySelector('.no').textContent = '07';
+  heading.querySelector('h2').textContent = 'معماری شعبه';
+  heading.querySelector('.slug').textContent = 'Branch Architecture';
+  heading.querySelector('.slug').setAttribute('lang', 'en');
+  const dividerBar = sectionBar('07', 'معماری شعبه');
+  dividerBar.classList.add('divider-page-bar');
+  const divider = addSlide([dividerBar, heading], 'architecture', 'divider');
+  divider.firstElementChild.append(checkerRail());
+  const list = document.createElement('ul');
+  list.className = 'divider-topic-list architecture-topic-list';
+  divider.firstElementChild.append(list);
+  for (const [title, file] of architectureMockups) {
+    const card = document.createElement('article');
+    card.className = 'mock-card';
+    const photo = document.createElement('img');
+    photo.className = 'mock-photo';
+    photo.src = './assets/mockups/' + file;
+    photo.alt = title;
+    photo.loading = 'lazy';
+    card.append(photo);
+    const bar = sectionBar('', 'معماری شعبه', title);
+    bar.classList.add('mock-page-bar');
+    const slide = addSlide([bar, card], 'architecture');
+    const item = document.createElement('li');
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.textContent = title;
+    button.addEventListener('click', () => show(slides.indexOf(slide)));
+    item.append(button);
+    list.append(item);
+  }
+}
 slides.forEach((slide, index) => {
   if (index) slide.querySelector('.slide-page-number')?.replaceChildren(document.createTextNode(String(index).padStart(3, '0')));
 });
@@ -686,7 +951,7 @@ navSections.forEach(section => {
 });
 let current = 0;
 function alignBasicDividerSubtitle() {
-  for (const chapterId of ['essentials', 'colors']) {
+  for (const chapterId of ['essentials', 'colors', 'pattern', 'packaging', 'uniform']) {
     const divider = slides.find(slide => slide.dataset.chapter === chapterId && slide.classList.contains('divider'));
     if (!divider || divider.hidden) continue;
     const persian = divider.querySelector('.chapter-top h2');
@@ -773,7 +1038,7 @@ function show(index) {
   fit();
   alignPaletteNames();
   alignBasicDividerSubtitle();
-  if (['essentials', 'colors'].includes(slides[current].dataset.chapter) && slides[current].classList.contains('divider')) {
+  if (['essentials', 'colors', 'pattern', 'packaging', 'uniform'].includes(slides[current].dataset.chapter) && slides[current].classList.contains('divider')) {
     document.fonts.load('900 38px Aileron').then(alignBasicDividerSubtitle);
   }
 }

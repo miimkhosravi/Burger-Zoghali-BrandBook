@@ -223,6 +223,16 @@
       if (button.textContent === removedTitle) button.closest('li')?.remove();
     });
   }
+  const removedDesignSlides = slides.splice(24, 3);
+  if (removedDesignSlides.length !== 3 || removedDesignSlides.some(slide => slide.dataset.chapter !== 'pattern')) {
+    throw new Error('Expected design slides 25–27 before packaging');
+  }
+  removedDesignSlides.forEach(slide => slide.remove());
+  slides.find(slide => slide.dataset.chapter === 'pattern' && slide.classList.contains('divider'))
+    ?.querySelector('.design-topic-list')?.remove();
+  replacePackagingSlides();
+  appendUniformSlides();
+  appendArchitectureSlides();
   slides.forEach((slide, index) => {
     if (index) slide.querySelector('.slide-page-number')?.replaceChildren(document.createTextNode(String(index).padStart(3, '0')));
   });
